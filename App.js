@@ -7,10 +7,10 @@
  */
 
 import React from 'react'
-import OnboardingScreen from './src/screens/OnboardingScreen'
+import LoginScreen from './src/screens/LoginScreen'
 
 const App = () => {
-  return <OnboardingScreen />
+  return <LoginScreen />
 }
 
 export default App
