@@ -1,23 +1,39 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { View, TextInput, StyleSheet } from 'react-native'
-import EvilIcons from 'react-native-vector-icons/EvilIcons'
 
-const InputBox = () => {
+const InputBox = (props) => {
   return (
-    <View style={styles['container']}>
-      <EvilIcons
-        name='envelope'
-        color='#727c8e'
-        size={22}
-        style={styles['icon']}
+    <View
+      style={[
+        props.containerStyle,
+        styles['container']
+      ]}
+    >
+      <props.icon.type
+        name={props.icon.name}
+        color={props.icon.color}
+        size={props.icon.size}
+        style={props.icon.style}
       />
       <TextInput
-        placeholder='Email address'
+        placeholder={props.placeholder}
         placeholderTextColor='#727c8e'
+        secureTextEntry={props.password}
         style={styles['input-box']}
       />
     </View>
   )
+}
+
+InputBox.propTypes = {
+  icon: PropTypes.object,
+  placeholder: PropTypes.string,
+  password: PropTypes.bool,
+  containerStyle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ])
 }
 
 export default InputBox
@@ -29,10 +45,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#ffffff'
-  },
-  icon: {
-    marginRight: 10,
-    marginLeft: 20
   },
   'input-box': {
     flex: 1,

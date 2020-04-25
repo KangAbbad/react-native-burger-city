@@ -124,8 +124,11 @@ class OnboardingScreen extends Component {
       <TouchableHighlight
         onPress={() => {}}
         underlayColor="#ED941A"
-        style={styles.onboarding__button}>
-        <Text style={styles.onboarding__button__text}>Get start here</Text>
+        style={styles.onboarding__button}
+      >
+        <Text style={styles.onboarding__button__text}>
+          Get start here
+        </Text>
       </TouchableHighlight>
     )
   };

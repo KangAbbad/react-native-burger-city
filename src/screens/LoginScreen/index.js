@@ -7,8 +7,14 @@ import {
   StatusBar,
   Image,
   YellowBox,
-  Text
+  Text,
+  FlatList,
+  TouchableOpacity,
+  TouchableHighlight
 } from 'react-native'
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import CheckBox from 'react-native-check-box'
 
 import InputBox from '../../components/InputBox'
 
@@ -18,6 +24,9 @@ import bcLogo from '../../assets/icons/burger-city-logo.png'
 class LoginScreen extends Component {
   constructor (props) {
     super(props)
+    this.state = {
+      isChecked: false
+    }
 
     YellowBox.ignoreWarnings(['FlatList: Calling `getNode()`'])
   }
@@ -48,6 +57,7 @@ class LoginScreen extends Component {
         {this.renderLogo()}
         {this.renderLead()}
         {this.renderForm()}
+        {this.renderFooter()}
       </ImageBackground>
     )
   }
@@ -81,13 +91,145 @@ class LoginScreen extends Component {
     return (
       <View style={styles['onboarding__form']}>
         {this.renderInputBox()}
+        {this.renderOption()}
+        {this.renderSubmitButton()}
+        {this.renderSignUp()}
       </View>
     )
   }
 
   renderInputBox = () => {
+    const inputBoxArr = [
+      {
+        placeholder: 'Email Address',
+        icon: {
+          type: EvilIcons,
+          name: 'envelope',
+          color: '#727c8e',
+          size: 22,
+          style: styles['onboarding__input__icon']
+        },
+        containerStyle: {}
+      },
+      {
+        placeholder: 'Password',
+        icon: {
+          type: EvilIcons,
+          name: 'lock',
+          color: '#727c8e',
+          size: 25,
+          style: [
+            styles['onboarding__input__icon'],
+            { marginLeft: 17 }
+          ]
+        },
+        containerStyle: { marginTop: 17 }
+      }
+    ]
+
     return (
-      <InputBox />
+      <FlatList
+        data={inputBoxArr}
+        keyExtractor={(item, index) => item + index.toString()}
+        renderItem={({ item, index }) => (
+          <InputBox password={index === 1} {...item} />
+        )}
+      />
+    )
+  }
+
+  renderOption = () => {
+    return (
+      <View style={styles['onboarding__option']}>
+        {this.renderOptRememberMe()}
+        {this.renderOptForgotPassword()}
+      </View>
+    )
+  }
+
+  renderOptRememberMe = () => {
+    const { isChecked } = this.state
+    return (
+      <CheckBox
+        style={{ flex: 1 }}
+        isChecked={isChecked}
+        rightText='Remember Me'
+        rightTextStyle={styles['onboarding__option__text']}
+        checkBoxColor='#ffffff'
+        unCheckedImage={
+          <MaterialIcons
+            name='radio-button-unchecked'
+            color='#ffffff'
+            size={20}
+          />
+        }
+        checkedImage={
+          <MaterialIcons
+            name='check-circle'
+            color='#ffffff'
+            size={20}
+          />
+        }
+        onClick={this.onRemember}
+      />
+    )
+  }
+
+  onRemember = () => {
+    this.setState(prevState => ({
+      isChecked: !prevState.isChecked
+    }))
+  }
+
+  renderOptForgotPassword = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {}}
+      >
+        <Text style={styles['onboarding__option__text']}>
+          Forgot Password?
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderSubmitButton = () => {
+    return (
+      <TouchableHighlight
+        onPress={() => {}}
+        underlayColor="#ED941A"
+        style={styles['onboarding__button']}
+      >
+        <Text style={styles['onboarding__button__text']}>
+          Log In
+        </Text>
+      </TouchableHighlight>
+    )
+  }
+
+  renderSignUp = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {}}
+        style={styles['onboarding__sign-up']}
+      >
+        <Text style={styles['onboarding__sign-up__text']}>
+          New user? Sign up
+        </Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderFooter = () => {
+    return (
+      <View style={styles['onboarding__footer']}>
+        <Text style={styles['onboarding__footer__text']}>
+          By signing up you indicate that you have read and agreed to the Patch&nbsp;
+          <Text style={styles['onboarding__footer__text--underline']}>
+            Terms of Service
+          </Text>
+        </Text>
+      </View>
     )
   }
 }
@@ -134,6 +276,61 @@ const styles = StyleSheet.create({
   },
   onboarding__form: {
     paddingHorizontal: 25,
-    marginTop: 40
+    marginTop: 35
+  },
+  onboarding__input__icon: {
+    marginRight: 10,
+    marginLeft: 20
+  },
+  onboarding__option: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 15
+  },
+  onboarding__option__text: {
+    fontFamily: 'Nunito-SemiBold',
+    fontSize: 12,
+    color: '#ffffff',
+    includeFontPadding: false,
+    marginLeft: 5
+  },
+  onboarding__button: {
+    borderRadius: 8,
+    alignItems: 'center',
+    backgroundColor: '#ff9f1c',
+    paddingVertical: 15,
+    marginTop: 15
+  },
+  onboarding__button__text: {
+    fontFamily: 'Nunito-Black',
+    fontSize: 16,
+    color: '#ffffff',
+    includeFontPadding: false
+  },
+  'onboarding__sign-up': {
+    alignItems: 'center',
+    marginTop: 20
+  },
+  'onboarding__sign-up__text': {
+    fontFamily: 'Nunito-SemiBold',
+    fontSize: 12,
+    color: '#ff9f1c',
+    includeFontPadding: false
+  },
+  onboarding__footer: {
+    marginTop: 35,
+    alignItems: 'center'
+  },
+  onboarding__footer__text: {
+    fontFamily: 'Nunito-Regular',
+    fontSize: 12,
+    color: '#ffffff',
+    includeFontPadding: false,
+    width: 250,
+    textAlign: 'center'
+  },
+  'onboarding__footer__text--underline': {
+    textDecorationLine: 'underline'
   }
 })
