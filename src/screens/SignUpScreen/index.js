@@ -12,38 +12,20 @@ import {
   TouchableHighlight
 } from 'react-native'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import InputBox from '../../components/InputBox'
 
 import bgImage from '../../assets/images/background-image.png'
 import bcLogo from '../../assets/icons/burger-city-logo.png'
 
-class ForgotPasswordScreen extends Component {
+class SignUpScreen extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      isChecked: false,
-      data: {
-        email: '',
-        newPassword: '',
-        confirmPassword: '',
-        phone: '',
-        otp: ''
-      },
-      identifier: 'create-new-password'
+      isChecked: false
     }
 
     YellowBox.ignoreWarnings(['FlatList: Calling `getNode()`'])
-  }
-
-  onHandleInput = (key, value) => {
-    this.setState(prevState => ({
-      data: {
-        ...prevState.data,
-        [key]: value
-      }
-    }))
   }
 
   render () {
@@ -89,20 +71,13 @@ class ForgotPasswordScreen extends Component {
   }
 
   renderLead = () => {
-    const { identifier } = this.state
-    const sublead = identifier === 'create-new-password'
-      ? 'Please enter a new password and confirm the password'
-      : identifier === 'insert-otp'
-        ? 'For your security, a one time password has been sent to your email address. Please enter it below to continue.'
-        : 'Custom Subtitle'
-
     return (
       <View style={styles['onboarding__lead']}>
         <Text style={styles['onboarding__lead--h1']}>
-          Forgot password
+          Welcome to Burger City!
         </Text>
         <Text style={styles['onboarding__lead--p']}>
-          {sublead}
+          Sign up to continue
         </Text>
       </View>
     )
@@ -118,11 +93,8 @@ class ForgotPasswordScreen extends Component {
   }
 
   renderInputBox = () => {
-    const { identifier } = this.state
-
-    const formInputNewPassword = [
+    const inputBoxArr = [
       {
-        name: 'email',
         placeholder: 'Email Address',
         icon: {
           type: EvilIcons,
@@ -134,19 +106,20 @@ class ForgotPasswordScreen extends Component {
         containerStyle: {}
       },
       {
-        name: 'newPassword',
-        placeholder: 'New Password',
+        placeholder: 'Password',
         icon: {
           type: EvilIcons,
           name: 'lock',
           color: '#727c8e',
-          size: 22,
-          style: styles['onboarding__input__icon']
+          size: 25,
+          style: [
+            styles['onboarding__input__icon'],
+            { marginLeft: 17 }
+          ]
         },
         containerStyle: { marginTop: 17 }
       },
       {
-        name: 'confirmPassword',
         placeholder: 'Confirm Password',
         icon: {
           type: EvilIcons,
@@ -162,101 +135,37 @@ class ForgotPasswordScreen extends Component {
       }
     ]
 
-    const formInputOTP = [
-      {
-        name: 'otp',
-        placeholder: 'OTP',
-        icon: {
-          type: FontAwesome5,
-          name: 'clipboard-check',
-          color: '#727c8e',
-          size: 18,
-          style: [
-            styles['onboarding__input__icon'],
-            { marginTop: -2 }
-          ]
-        },
-        containerStyle: {}
-      }
-    ]
-
-    const inputBox = identifier === 'create-new-password'
-      ? formInputNewPassword
-      : identifier === 'insert-otp'
-        ? formInputOTP
-        : []
-
     return (
       <FlatList
-        data={inputBox}
+        data={inputBoxArr}
         keyExtractor={(item, index) => item + index.toString()}
         renderItem={({ item, index }) => (
-          <InputBox
-            password={index > 0}
-            onHandleInput={this.onHandleInput}
-            {...item}
-          />
+          <InputBox password={index === 1} {...item} />
         )}
       />
     )
   }
 
   renderSubmitButton = () => {
-    const { data, identifier } = this.state
-    const disabled = !data.email || !data.newPassword || !data.confirmPassword
-    const buttonStyle = disabled
-      ? [
-        styles['onboarding__button'],
-        styles['onboarding__button--inactive']
-      ]
-      : [
-        styles['onboarding__button'],
-        styles['onboarding__button--active']
-      ]
-
-    const titleStyle = disabled
-      ? [
-        styles['onboarding__button__text'],
-        styles['onboarding__button__text--inactive']
-      ]
-      : [
-        styles['onboarding__button__text'],
-        styles['onboarding__button__text--active']
-      ]
-
-    const titleButton = identifier === 'create-new-password'
-      ? 'Submit'
-      : identifier === 'insert-otp'
-        ? 'Proceed'
-        : 'Custom Button'
-
     return (
       <TouchableHighlight
-        onPress={this.onSubmit}
+        onPress={() => {}}
         underlayColor="#ED941A"
-        disabled={disabled}
-        style={buttonStyle}
+        style={styles['onboarding__button']}
       >
-        <Text style={titleStyle}>
-          {titleButton}
+        <Text style={styles['onboarding__button__text']}>
+          Sign Up
         </Text>
       </TouchableHighlight>
     )
   }
-
-  onSubmit = () => {
-    const { identifier } = this.state
-    if (identifier === 'create-new-password') {
-      this.setState({ identifier: 'insert-otp' })
-    }
-  }
 }
 
-ForgotPasswordScreen.propTypes = {
+SignUpScreen.propTypes = {
   navigation: PropTypes.object
 }
 
-export default ForgotPasswordScreen
+export default SignUpScreen
 
 const styles = StyleSheet.create({
   onboarding__bg: {
@@ -287,11 +196,9 @@ const styles = StyleSheet.create({
   },
   'onboarding__lead--p': {
     fontFamily: 'Nunito-SemiBold',
-    fontSize: 16,
+    fontSize: 18,
     color: '#ffffff',
     includeFontPadding: false,
-    textAlign: 'center',
-    width: 250,
     marginTop: 3
   },
   onboarding__form: {
@@ -305,27 +212,14 @@ const styles = StyleSheet.create({
   onboarding__button: {
     borderRadius: 8,
     alignItems: 'center',
+    backgroundColor: '#ff9f1c',
     paddingVertical: 15,
     marginTop: 50
-  },
-  'onboarding__button--active': {
-    backgroundColor: '#ff9f1c'
-  },
-  'onboarding__button--inactive': {
-    borderWidth: 1,
-    borderColor: '#ff9f1c',
-    backgroundColor: 'transparent'
   },
   onboarding__button__text: {
     fontFamily: 'Nunito-Black',
     fontSize: 16,
     color: '#ffffff',
     includeFontPadding: false
-  },
-  'onboarding__button__text--active': {
-    color: '#ffffff'
-  },
-  'onboarding__button__text--inactive': {
-    color: '#ff9f1c'
   }
 })

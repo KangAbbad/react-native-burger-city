@@ -21,19 +21,22 @@ const InputBox = (props) => {
         placeholderTextColor='#727c8e'
         secureTextEntry={props.password}
         style={styles['input-box']}
+        onChangeText={(value) => props.onHandleInput(props.name, value)}
       />
     </View>
   )
 }
 
 InputBox.propTypes = {
+  name: PropTypes.string,
   icon: PropTypes.object,
   placeholder: PropTypes.string,
   password: PropTypes.bool,
   containerStyle: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array
-  ])
+  ]),
+  onHandleInput: PropTypes.func
 }
 
 export default InputBox
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito-Regular',
     fontSize: 14,
     color: '#727c8e',
-    includeFontPadding: false,
+    // includeFontPadding: false,
     paddingRight: 30
   }
 })

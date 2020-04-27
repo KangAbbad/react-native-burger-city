@@ -122,16 +122,20 @@ class OnboardingScreen extends Component {
   renderStartButton = () => {
     return (
       <TouchableHighlight
-        onPress={() => {}}
         underlayColor="#ED941A"
         style={styles.onboarding__button}
+        onPress={this.onStartHere}
       >
         <Text style={styles.onboarding__button__text}>
           Get start here
         </Text>
       </TouchableHighlight>
     )
-  };
+  }
+
+  onStartHere = () => {
+    this.props.navigation.navigate('LoginScreen')
+  }
 }
 
 OnboardingScreen.propTypes = {

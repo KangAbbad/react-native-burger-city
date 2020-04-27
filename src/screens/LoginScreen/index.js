@@ -184,13 +184,17 @@ class LoginScreen extends Component {
   renderOptForgotPassword = () => {
     return (
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={this.onForgetPassword}
       >
         <Text style={styles['onboarding__option__text']}>
           Forgot Password?
         </Text>
       </TouchableOpacity>
     )
+  }
+
+  onForgetPassword = () => {
+    this.props.navigation.navigate('ForgotPasswordScreen')
   }
 
   renderSubmitButton = () => {
