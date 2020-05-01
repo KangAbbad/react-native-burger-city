@@ -9,14 +9,14 @@ import {
   YellowBox,
   Text,
   FlatList,
-  TouchableOpacity,
-  TouchableHighlight
+  TouchableOpacity
 } from 'react-native'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import CheckBox from 'react-native-check-box'
 
 import InputBox from '../../components/InputBox'
+import CustomButton from '../../components/CustomButton'
 
 import bgImage from '../../assets/images/background-image.png'
 import bcLogo from '../../assets/icons/burger-city-logo.png'
@@ -25,10 +25,23 @@ class LoginScreen extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      isChecked: false
+      isChecked: false,
+      data: {
+        email: '',
+        password: ''
+      }
     }
 
     YellowBox.ignoreWarnings(['FlatList: Calling `getNode()`'])
+  }
+
+  onHandleInput = (key, value) => {
+    this.setState(prevState => ({
+      data: {
+        ...prevState.data,
+        [key]: value
+      }
+    }))
   }
 
   render () {
@@ -44,8 +57,8 @@ class LoginScreen extends Component {
     return (
       <StatusBar
         translucent
-        barStyle="light-content"
-        backgroundColor="transparent"
+        barStyle='light-content'
+        backgroundColor='transparent'
       />
     )
   }
@@ -99,8 +112,10 @@ class LoginScreen extends Component {
   }
 
   renderInputBox = () => {
+    const { data } = this.state
     const inputBoxArr = [
       {
+        name: 'email',
         placeholder: 'Email Address',
         icon: {
           type: EvilIcons,
@@ -112,6 +127,7 @@ class LoginScreen extends Component {
         containerStyle: {}
       },
       {
+        name: 'password',
         placeholder: 'Password',
         icon: {
           type: EvilIcons,
@@ -132,7 +148,12 @@ class LoginScreen extends Component {
         data={inputBoxArr}
         keyExtractor={(item, index) => item + index.toString()}
         renderItem={({ item, index }) => (
-          <InputBox password={index === 1} {...item} />
+          <InputBox
+            password={index === 1}
+            value={data[item.name]}
+            onHandleInput={this.onHandleInput}
+            {...item}
+          />
         )}
       />
     )
@@ -198,23 +219,31 @@ class LoginScreen extends Component {
   }
 
   renderSubmitButton = () => {
+    const { data } = this.state
+    const disabled = !data.email || !data.password
     return (
-      <TouchableHighlight
-        onPress={() => {}}
-        underlayColor="#ED941A"
-        style={styles['onboarding__button']}
-      >
-        <Text style={styles['onboarding__button__text']}>
-          Log In
-        </Text>
-      </TouchableHighlight>
+      <CustomButton
+        titleButton='Log In'
+        disabled={disabled}
+        buttonStyle={{ marginTop: 15 }}
+        onPress={this.onLogin}
+      />
     )
+  }
+
+  onLogin = () => {
+    this.setState({
+      data: {
+        email: '',
+        password: ''
+      }
+    })
   }
 
   renderSignUp = () => {
     return (
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={this.onSignUp}
         style={styles['onboarding__sign-up']}
       >
         <Text style={styles['onboarding__sign-up__text']}>
@@ -222,6 +251,10 @@ class LoginScreen extends Component {
         </Text>
       </TouchableOpacity>
     )
+  }
+
+  onSignUp = () => {
+    this.props.navigation.navigate('SignUpScreen')
   }
 
   renderFooter = () => {
@@ -298,19 +331,6 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     includeFontPadding: false,
     marginLeft: 5
-  },
-  onboarding__button: {
-    borderRadius: 8,
-    alignItems: 'center',
-    backgroundColor: '#ff9f1c',
-    paddingVertical: 15,
-    marginTop: 15
-  },
-  onboarding__button__text: {
-    fontFamily: 'Nunito-Black',
-    fontSize: 16,
-    color: '#ffffff',
-    includeFontPadding: false
   },
   'onboarding__sign-up': {
     alignItems: 'center',

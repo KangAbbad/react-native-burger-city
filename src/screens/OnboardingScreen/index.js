@@ -8,13 +8,12 @@ import {
   StatusBar,
   Image,
   Dimensions,
-  YellowBox,
   TouchableHighlight
 } from 'react-native'
+import Carousel, { Pagination } from 'react-native-snap-carousel'
 
 import bgImage from '../../assets/images/background-image.png'
 import bcLogo from '../../assets/icons/burger-city-logo.png'
-import Carousel, { Pagination } from 'react-native-snap-carousel'
 
 class OnboardingScreen extends Component {
   constructor (props) {
@@ -27,8 +26,6 @@ class OnboardingScreen extends Component {
       ],
       activeSlide: 0
     }
-
-    YellowBox.ignoreWarnings(['FlatList: Calling `getNode()`'])
   }
 
   render () {
@@ -44,11 +41,11 @@ class OnboardingScreen extends Component {
     return (
       <StatusBar
         translucent
-        barStyle="light-content"
-        backgroundColor="transparent"
+        barStyle='light-content'
+        backgroundColor='transparent'
       />
     )
-  };
+  }
 
   renderBackground = () => {
     return (
@@ -59,11 +56,11 @@ class OnboardingScreen extends Component {
         {this.renderStartButton()}
       </ImageBackground>
     )
-  };
+  }
 
   renderOverlay = () => {
     return <View style={styles.onboarding__overlay} />
-  };
+  }
 
   renderLogo = () => {
     return (
@@ -71,16 +68,16 @@ class OnboardingScreen extends Component {
         <Image source={bcLogo} />
       </View>
     )
-  };
+  }
 
   renderHero = () => {
     return (
-      <View style={styles.onboarding__hero__container}>
+      <View style={styles['onboarding__hero__container']}>
         {this.renderCarousel()}
         {this.renderCarouselPagination()}
       </View>
     )
-  };
+  }
 
   renderCarousel = () => {
     const { width } = Dimensions.get('window')
@@ -88,21 +85,21 @@ class OnboardingScreen extends Component {
       <Carousel
         data={this.state.hero}
         renderItem={this.renderCarouselItem}
-        decelerationRate="fast"
+        decelerationRate='fast'
         sliderWidth={width}
         itemWidth={width}
         onSnapToItem={index => this.setState({ activeSlide: index })}
       />
     )
-  };
+  }
 
   renderCarouselItem = ({ item }) => {
     return (
-      <View style={styles.onboarding__hero__wrapper}>
+      <View style={styles['onboarding__hero__wrapper']}>
         <Text style={styles.onboarding__hero}>{item}</Text>
       </View>
     )
-  };
+  }
 
   renderCarouselPagination () {
     const { hero, activeSlide } = this.state
@@ -111,10 +108,10 @@ class OnboardingScreen extends Component {
         dotsLength={hero.length}
         activeDotIndex={activeSlide}
         dotStyle={styles['onboarding__pagination__dot']}
-        dotContainerStyle={styles.onboarding__pagination__dot__container}
+        dotContainerStyle={styles['onboarding__pagination__dot__container']}
         inactiveDotOpacity={0.5}
         inactiveDotScale={1}
-        containerStyle={styles.onboarding__pagination__container}
+        containerStyle={styles['onboarding__pagination__container']}
       />
     )
   }
@@ -122,7 +119,7 @@ class OnboardingScreen extends Component {
   renderStartButton = () => {
     return (
       <TouchableHighlight
-        underlayColor="#ED941A"
+        underlayColor='#ED941A'
         style={styles.onboarding__button}
         onPress={this.onStartHere}
       >

@@ -20,6 +20,7 @@ const InputBox = (props) => {
         placeholder={props.placeholder}
         placeholderTextColor='#727c8e'
         secureTextEntry={props.password}
+        value={props.value}
         style={styles['input-box']}
         onChangeText={(value) => props.onHandleInput(props.name, value)}
       />
@@ -32,6 +33,7 @@ InputBox.propTypes = {
   icon: PropTypes.object,
   placeholder: PropTypes.string,
   password: PropTypes.bool,
+  value: PropTypes.string,
   containerStyle: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array

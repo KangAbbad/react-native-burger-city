@@ -8,12 +8,12 @@ import {
   Image,
   YellowBox,
   Text,
-  FlatList,
-  TouchableHighlight
+  FlatList
 } from 'react-native'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 
 import InputBox from '../../components/InputBox'
+import CustomButton from '../../components/CustomButton'
 
 import bgImage from '../../assets/images/background-image.png'
 import bcLogo from '../../assets/icons/burger-city-logo.png'
@@ -22,10 +22,24 @@ class SignUpScreen extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      isChecked: false
+      isChecked: false,
+      data: {
+        email: '',
+        password: '',
+        confirmPassword: ''
+      }
     }
 
     YellowBox.ignoreWarnings(['FlatList: Calling `getNode()`'])
+  }
+
+  onHandleInput = (key, value) => {
+    this.setState(prevState => ({
+      data: {
+        ...prevState.data,
+        [key]: value
+      }
+    }))
   }
 
   render () {
@@ -41,8 +55,8 @@ class SignUpScreen extends Component {
     return (
       <StatusBar
         translucent
-        barStyle="light-content"
-        backgroundColor="transparent"
+        barStyle='light-content'
+        backgroundColor='transparent'
       />
     )
   }
@@ -95,6 +109,7 @@ class SignUpScreen extends Component {
   renderInputBox = () => {
     const inputBoxArr = [
       {
+        name: 'email',
         placeholder: 'Email Address',
         icon: {
           type: EvilIcons,
@@ -106,6 +121,7 @@ class SignUpScreen extends Component {
         containerStyle: {}
       },
       {
+        name: 'password',
         placeholder: 'Password',
         icon: {
           type: EvilIcons,
@@ -120,6 +136,7 @@ class SignUpScreen extends Component {
         containerStyle: { marginTop: 17 }
       },
       {
+        name: 'confirmPassword',
         placeholder: 'Confirm Password',
         icon: {
           type: EvilIcons,
@@ -140,23 +157,26 @@ class SignUpScreen extends Component {
         data={inputBoxArr}
         keyExtractor={(item, index) => item + index.toString()}
         renderItem={({ item, index }) => (
-          <InputBox password={index === 1} {...item} />
+          <InputBox
+            password={index > 0}
+            onHandleInput={this.onHandleInput}
+            {...item}
+          />
         )}
       />
     )
   }
 
   renderSubmitButton = () => {
+    const { data } = this.state
+    const disabled = !data.email || !data.password || !data.confirmPassword
+
     return (
-      <TouchableHighlight
+      <CustomButton
+        titleButton='Sign Up'
+        disabled={disabled}
         onPress={() => {}}
-        underlayColor="#ED941A"
-        style={styles['onboarding__button']}
-      >
-        <Text style={styles['onboarding__button__text']}>
-          Sign Up
-        </Text>
-      </TouchableHighlight>
+      />
     )
   }
 }
@@ -208,18 +228,5 @@ const styles = StyleSheet.create({
   onboarding__input__icon: {
     marginRight: 10,
     marginLeft: 20
-  },
-  onboarding__button: {
-    borderRadius: 8,
-    alignItems: 'center',
-    backgroundColor: '#ff9f1c',
-    paddingVertical: 15,
-    marginTop: 50
-  },
-  onboarding__button__text: {
-    fontFamily: 'Nunito-Black',
-    fontSize: 16,
-    color: '#ffffff',
-    includeFontPadding: false
   }
 })

@@ -8,13 +8,13 @@ import {
   Image,
   YellowBox,
   Text,
-  FlatList,
-  TouchableHighlight
+  FlatList
 } from 'react-native'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import InputBox from '../../components/InputBox'
+import CustomButton from '../../components/CustomButton'
 
 import bgImage from '../../assets/images/background-image.png'
 import bcLogo from '../../assets/icons/burger-city-logo.png'
@@ -59,8 +59,8 @@ class ForgotPasswordScreen extends Component {
     return (
       <StatusBar
         translucent
-        barStyle="light-content"
-        backgroundColor="transparent"
+        barStyle='light-content'
+        backgroundColor='transparent'
       />
     )
   }
@@ -204,26 +204,6 @@ class ForgotPasswordScreen extends Component {
   renderSubmitButton = () => {
     const { data, identifier } = this.state
     const disabled = !data.email || !data.newPassword || !data.confirmPassword
-    const buttonStyle = disabled
-      ? [
-        styles['onboarding__button'],
-        styles['onboarding__button--inactive']
-      ]
-      : [
-        styles['onboarding__button'],
-        styles['onboarding__button--active']
-      ]
-
-    const titleStyle = disabled
-      ? [
-        styles['onboarding__button__text'],
-        styles['onboarding__button__text--inactive']
-      ]
-      : [
-        styles['onboarding__button__text'],
-        styles['onboarding__button__text--active']
-      ]
-
     const titleButton = identifier === 'create-new-password'
       ? 'Submit'
       : identifier === 'insert-otp'
@@ -231,16 +211,11 @@ class ForgotPasswordScreen extends Component {
         : 'Custom Button'
 
     return (
-      <TouchableHighlight
-        onPress={this.onSubmit}
-        underlayColor="#ED941A"
+      <CustomButton
         disabled={disabled}
-        style={buttonStyle}
-      >
-        <Text style={titleStyle}>
-          {titleButton}
-        </Text>
-      </TouchableHighlight>
+        titleButton={titleButton}
+        onPress={this.onSubmit}
+      />
     )
   }
 
@@ -301,31 +276,5 @@ const styles = StyleSheet.create({
   onboarding__input__icon: {
     marginRight: 10,
     marginLeft: 20
-  },
-  onboarding__button: {
-    borderRadius: 8,
-    alignItems: 'center',
-    paddingVertical: 15,
-    marginTop: 50
-  },
-  'onboarding__button--active': {
-    backgroundColor: '#ff9f1c'
-  },
-  'onboarding__button--inactive': {
-    borderWidth: 1,
-    borderColor: '#ff9f1c',
-    backgroundColor: 'transparent'
-  },
-  onboarding__button__text: {
-    fontFamily: 'Nunito-Black',
-    fontSize: 16,
-    color: '#ffffff',
-    includeFontPadding: false
-  },
-  'onboarding__button__text--active': {
-    color: '#ffffff'
-  },
-  'onboarding__button__text--inactive': {
-    color: '#ff9f1c'
   }
 })
