@@ -22,11 +22,16 @@ import FavoriteScreen from './src/screens/FavoriteScreen'
 import TrackOrderScreen from './src/screens/TrackOrderScreen'
 import WalletScreen from './src/screens/WalletScreen'
 
-import HomeIcon from './src/assets/icons/home-icon.svg'
-import OurBurgerIcon from './src/assets/icons/our-burger-icon.svg'
-import StarIcon from './src/assets/icons/star-icon.svg'
-import TrackIcon from './src/assets/icons/track-icon.svg'
-import WalletIcon from './src/assets/icons/wallet-icon.svg'
+import HomeIconInactive from './src/assets/icons/home-icon.svg'
+import HomeIconActive from './src/assets/icons/home-icon-active.svg'
+import OurBurgerIconInactive from './src/assets/icons/our-burger-icon.svg'
+import OurBurgerIconActive from './src/assets/icons/our-burger-icon-active.svg'
+import StarIconInactive from './src/assets/icons/star-icon.svg'
+import StarIconActive from './src/assets/icons/star-icon-active.svg'
+import TrackIconInactive from './src/assets/icons/track-icon.svg'
+import TrackIconActive from './src/assets/icons/track-icon-active.svg'
+import WalletIconInactive from './src/assets/icons/wallet-icon.svg'
+import WalletIconActive from './src/assets/icons/wallet-icon-active.svg'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -72,31 +77,46 @@ const allTab = [
     name: 'HomeScreen',
     component: HomeScreen,
     label: 'Home',
-    icon: HomeIcon
+    icon: {
+      active: HomeIconActive,
+      inactive: HomeIconInactive
+    }
   },
   {
     name: 'OurBurgerScreen',
     component: OurBurgerScreen,
     label: 'Our Burgers',
-    icon: OurBurgerIcon
+    icon: {
+      active: OurBurgerIconActive,
+      inactive: OurBurgerIconInactive
+    }
   },
   {
     name: 'FavoriteScreen',
     component: FavoriteScreen,
     label: 'Favourite',
-    icon: StarIcon
+    icon: {
+      active: StarIconActive,
+      inactive: StarIconInactive
+    }
   },
   {
     name: 'TrackOrderScreen',
     component: TrackOrderScreen,
     label: 'Track Orders',
-    icon: TrackIcon
+    icon: {
+      active: TrackIconActive,
+      inactive: TrackIconInactive
+    }
   },
   {
     name: 'WalletScreen',
     component: WalletScreen,
     label: 'Wallet',
-    icon: WalletIcon
+    icon: {
+      active: WalletIconActive,
+      inactive: WalletIconInactive
+    }
   }
 ]
 
@@ -126,12 +146,17 @@ const HomeTab = () => {
           component={item.component}
           options={{
             tabBarLabel: item.label,
-            tabBarIcon: () => (
-              <item.icon
-                width={index === 3 ? 28 : 22}
-                height={index === 3 ? 28 : 22}
-              />
-            )
+            // eslint-disable-next-line react/prop-types
+            tabBarIcon: ({ focused }) => {
+              const Icon = focused ? item.icon.active : item.icon.inactive
+              const size = index === 3 ? 28 : 22
+              return (
+                <Icon
+                  height={size}
+                  width={size}
+                />
+              )
+            }
           }}
         />
       ))}

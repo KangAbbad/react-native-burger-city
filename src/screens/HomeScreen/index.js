@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, StatusBar, Text, TouchableOpacity, Image, Dimensions, ImageBackground, ScrollView, FlatList } from 'react-native'
-import Feather from 'react-native-vector-icons/Feather'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { View, StyleSheet, StatusBar, Text, Image, Dimensions, ImageBackground, ScrollView, FlatList } from 'react-native'
 import Carousel, { Pagination } from 'react-native-snap-carousel'
 import StarRating from 'react-native-star-rating'
 
-import logo from '../../assets/icons/logo.png'
+import Header from '../../components/Header'
+
 import burgerLogo from '../../assets/icons/burger-city-logo.png'
 import sliderImg from '../../assets/images/slider-image.png'
 import ticketBg from '../../assets/images/ticket-background.png'
@@ -58,42 +57,7 @@ class HomeScreen extends Component {
 
   renderHeader = () => {
     return (
-      <View style={styles['header']}>
-        <TouchableOpacity
-          onPress={() => {}}
-          style={styles['btn']}
-        >
-          <View style={styles['lang__btn']}>
-            <Text style={styles['text']}>
-              EN
-            </Text>
-            <Feather
-              name='chevron-down'
-              color='#ff9f1c'
-              size={20}
-              style={{ marginLeft: 2 }}
-            />
-          </View>
-        </TouchableOpacity>
-
-        <View style={styles['logo']}>
-          <Image
-            source={logo}
-            resizeMode='contain'
-          />
-        </View>
-
-        <TouchableOpacity
-          onPress={() => {}}
-          style={styles['btn']}
-        >
-          <FontAwesome
-            name='shopping-cart'
-            color='#ff9f1c'
-            size={20}
-          />
-        </TouchableOpacity>
-      </View>
+      <Header />
     )
   }
 
@@ -115,6 +79,7 @@ class HomeScreen extends Component {
         decelerationRate='fast'
         sliderWidth={width}
         itemWidth={width}
+        inactiveSlideScale={1}
         onSnapToItem={index => this.setState({ activeSlide: index })}
       />
     )
@@ -245,37 +210,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff'
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#ffffff',
-    paddingTop: 30
-  },
-  btn: {
-    paddingVertical: 15,
-    paddingHorizontal: 20
-  },
-  lang__btn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  logo: {
-    position: 'absolute',
-    top: 30,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  text: {
-    fontFamily: 'Nunito-Bold',
-    fontSize: 18,
-    color: '#ff9f1c',
-    includeFontPadding: false
   },
   home__slider__wrapper: {
     paddingHorizontal: 30,
