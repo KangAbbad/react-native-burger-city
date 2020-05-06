@@ -15,8 +15,8 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import CheckBox from 'react-native-check-box'
 
-import InputBox from '../../components/InputBox'
-import CustomButton from '../../components/CustomButton'
+import InputBox from '../../components/global/InputBox'
+import CustomButton from '../../components/global/CustomButton'
 
 import bgImage from '../../assets/images/background-image.png'
 import bcLogo from '../../assets/icons/burger-city-logo.png'

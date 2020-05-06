@@ -3,7 +3,7 @@ import { View, StyleSheet, StatusBar, Text, Image, Dimensions, ImageBackground, 
 import Carousel, { Pagination } from 'react-native-snap-carousel'
 import StarRating from 'react-native-star-rating'
 
-import Header from '../../components/Header'
+import Header from '../../components/global/Header'
 
 import burgerLogo from '../../assets/icons/burger-city-logo.png'
 import sliderImg from '../../assets/images/slider-image.png'

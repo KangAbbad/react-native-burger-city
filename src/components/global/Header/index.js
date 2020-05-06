@@ -4,12 +4,15 @@ import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-import logo from '../../assets/icons/logo.png'
+import logo from '../../../assets/icons/logo.png'
 
 const Header = (props) => {
   return (
     <View style={styles['header']}>
-      <LeftButton withBack={props.withBack} />
+      <LeftButton
+        withBack={props.withBack}
+        onPressLeftButton={props.onPressLeftButton}
+      />
 
       <View style={styles['logo']}>
         <Image
@@ -32,7 +35,7 @@ const Header = (props) => {
   )
 }
 
-const LeftButton = ({ withBack }) => {
+const LeftButton = ({ withBack, onPressLeftButton }) => {
   let button = (
     <View style={styles['lang__btn']}>
       <Text style={styles['text']}>
@@ -53,14 +56,17 @@ const LeftButton = ({ withBack }) => {
         name='chevron-left'
         color='#ff9f1c'
         size={28}
-        style={{ marginLeft: -5 }}
+        style={{
+          marginLeft: -5,
+          marginVertical: -10
+        }}
       />
     )
   }
 
   return (
     <TouchableOpacity
-      onPress={() => {}}
+      onPress={onPressLeftButton}
       style={styles['btn']}
     >
       {button}
@@ -69,11 +75,13 @@ const LeftButton = ({ withBack }) => {
 }
 
 Header.propTypes = {
-  withBack: PropTypes.bool
+  withBack: PropTypes.bool,
+  onPressLeftButton: PropTypes.func
 }
 
 LeftButton.propTypes = {
-  withBack: PropTypes.bool
+  withBack: PropTypes.bool,
+  onPressLeftButton: PropTypes.func
 }
 
 export default Header

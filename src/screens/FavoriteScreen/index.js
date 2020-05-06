@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 
 class FavoriteScreen extends Component {
   render () {
     return (
-      <View>
+      <View style={styles['container']}>
         <Text>
-          FavoriteScreen
+          Favourite
         </Text>
       </View>
     )
@@ -14,3 +14,11 @@ class FavoriteScreen extends Component {
 }
 
 export default FavoriteScreen
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})
