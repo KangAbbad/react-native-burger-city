@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native'
 
 export const BaseStyles = StyleSheet.create({
   text: {
+    fontFamily: 'Nunito-Regular',
     includeFontPadding: false
   },
   'text--black': {

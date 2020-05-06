@@ -5,6 +5,7 @@ import Carousel from 'react-native-snap-carousel'
 import Header from '../../components/global/Header'
 import OrderMethodContent from '../../components/scoped/OurBurgerComponents/OrderMethodContent'
 import DeliveryAddressContent from '../../components/scoped/OurBurgerComponents/DeliveryAddressContent'
+import PickupDateTimeContent from '../../components/scoped/OurBurgerComponents/PickupDateTimeContent'
 
 class OurBurgerScreen extends Component {
   constructor (props) {
@@ -72,12 +73,16 @@ class OurBurgerScreen extends Component {
         )
       case 2:
         return (
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>KeDua</Text>
-          </View>
+          <PickupDateTimeContent
+            onProceed={() => this.content.snapToNext()}
+          />
         )
       default:
-        return <OrderMethodContent />
+        return (
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text>404 Not Found</Text>
+          </View>
+        )
     }
   }
 }

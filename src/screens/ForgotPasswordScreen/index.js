@@ -14,7 +14,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import InputBox from '../../components/global/InputBox'
-import CustomButton from '../../components/global/CustomButton'
+import { StandardButton } from '../../components/global/CustomButton'
 
 import bgImage from '../../assets/images/background-image.png'
 import bcLogo from '../../assets/icons/burger-city-logo.png'
@@ -211,10 +211,11 @@ class ForgotPasswordScreen extends Component {
         : 'Custom Button'
 
     return (
-      <CustomButton
+      <StandardButton
         disabled={disabled}
         titleButton={titleButton}
         onPress={this.onSubmit}
+        buttonStyle={{ marginTop: 50 }}
       />
     )
   }

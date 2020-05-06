@@ -7,10 +7,11 @@ import {
   View,
   StatusBar,
   Image,
-  Dimensions,
-  TouchableHighlight
+  Dimensions
 } from 'react-native'
 import Carousel, { Pagination } from 'react-native-snap-carousel'
+
+import { StandardButton } from '../../components/global/CustomButton'
 
 import bgImage from '../../assets/images/background-image.png'
 import bcLogo from '../../assets/icons/burger-city-logo.png'
@@ -118,15 +119,11 @@ class OnboardingScreen extends Component {
 
   renderStartButton = () => {
     return (
-      <TouchableHighlight
-        underlayColor='#ED941A'
-        style={styles.onboarding__button}
+      <StandardButton
+        titleButton='Get start here'
+        buttonStyle={styles['onboarding__button']}
         onPress={this.onStartHere}
-      >
-        <Text style={styles.onboarding__button__text}>
-          Get start here
-        </Text>
-      </TouchableHighlight>
+      />
     )
   }
 
@@ -190,18 +187,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30
   },
   onboarding__button: {
-    borderRadius: 8,
-    alignItems: 'center',
-    backgroundColor: '#ff9f1c',
-    paddingVertical: 15,
     marginHorizontal: 30,
     marginTop: 'auto',
     marginBottom: 50
-  },
-  onboarding__button__text: {
-    fontFamily: 'Nunito-SemiBold',
-    fontSize: 16,
-    color: '#ffffff',
-    includeFontPadding: false
   }
 })

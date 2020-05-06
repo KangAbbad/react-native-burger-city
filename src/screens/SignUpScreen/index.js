@@ -13,7 +13,7 @@ import {
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 
 import InputBox from '../../components/global/InputBox'
-import CustomButton from '../../components/global/CustomButton'
+import { StandardButton } from '../../components/global/CustomButton'
 
 import bgImage from '../../assets/images/background-image.png'
 import bcLogo from '../../assets/icons/burger-city-logo.png'
@@ -172,10 +172,11 @@ class SignUpScreen extends Component {
     const disabled = !data.email || !data.password || !data.confirmPassword
 
     return (
-      <CustomButton
+      <StandardButton
         titleButton='Sign Up'
         disabled={disabled}
         onPress={() => {}}
+        buttonStyle={{ marginTop: 50 }}
       />
     )
   }

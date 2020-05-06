@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 
+import { StandardButton, IconButton } from '../../../global/CustomButton'
 import { BaseStyles } from '../../../../constant'
-import CustomButton from '../../../global/CustomButton'
 
 class DeliveryAddressContent extends Component {
   constructor (props) {
@@ -165,27 +165,20 @@ class DeliveryAddressContent extends Component {
           Delivery Address
         </Text>
 
-        <TouchableOpacity
-          onPress={() => {}}
-        >
-          <View style={styles['edit__button']}>
-            <Text
-              style={[
-                BaseStyles['text'],
-                BaseStyles['text--large'],
-                BaseStyles['text--black']
-              ]}
-            >
-              No. 02, 6th Lane, Colombo 03
-            </Text>
-
+        <IconButton
+          titleButton='No. 02, 6th Lane, Colombo 03'
+          iconButton={
             <EvilIcons
               name='pencil'
-              size={18}
+              size={20}
               color='#FF9F1C'
             />
-          </View>
-        </TouchableOpacity>
+          }
+          buttonStyle={{
+            paddingRight: 15,
+            marginTop: 18
+          }}
+        />
       </View>
     )
   }
@@ -214,27 +207,20 @@ class DeliveryAddressContent extends Component {
           Please select delivery date & time
         </Text>
 
-        <TouchableOpacity
-          onPress={() => {}}
-        >
-          <View style={styles['edit__button']}>
-            <Text
-              style={[
-                BaseStyles['text'],
-                BaseStyles['text--large'],
-                BaseStyles['text--black']
-              ]}
-            >
-              Delivery Date & Time
-            </Text>
-
+        <IconButton
+          titleButton='Delivery Date & Time'
+          iconButton={
             <EvilIcons
               name='pencil'
-              size={18}
+              size={20}
               color='#FF9F1C'
             />
-          </View>
-        </TouchableOpacity>
+          }
+          buttonStyle={{
+            paddingRight: 15,
+            marginTop: 18
+          }}
+        />
       </View>
     )
   }
@@ -242,7 +228,7 @@ class DeliveryAddressContent extends Component {
   renderProceedButton = () => {
     const { onProceed } = this.props
     return (
-      <CustomButton
+      <StandardButton
         titleButton='Proceed to Order'
         onPress={onProceed}
         buttonStyle={styles['proceed-order__button']}

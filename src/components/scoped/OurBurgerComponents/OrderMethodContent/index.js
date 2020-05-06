@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Text, FlatList } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import CustomButton from '../../../global/CustomButton'
+import { StandardButton, IconButton } from '../../../global/CustomButton'
 import { BaseStyles } from '../../../../constant'
 
 class OrderMethodContent extends Component {
@@ -77,29 +77,18 @@ class OrderMethodContent extends Component {
         renderItem={({ item, index }) => {
           const checkColor = item.isActive ? '#FF9F1C' : '#E3E5E8'
           return (
-            <TouchableOpacity
-              onPress={() => this.onPressMethod(index)}
-              style={{ marginTop: 20 }}
-            >
-              <View style={styles['order-method__button']}>
-                <Text
-                  style={[
-                    BaseStyles['text'],
-                    BaseStyles['text--large'],
-                    BaseStyles['text--semibold'],
-                    BaseStyles['text--black']
-                  ]}
-                >
-                  {item.name}
-                </Text>
-
+            <IconButton
+              titleButton={item.name}
+              iconButton={
                 <MaterialCommunityIcons
                   name='check-circle'
                   color={checkColor}
-                  size={16}
+                  size={18}
                 />
-              </View>
-            </TouchableOpacity>
+              }
+              buttonStyle={{ marginTop: 20 }}
+              onPress={() => this.onPressMethod(index)}
+            />
           )
         }}
       />
@@ -126,7 +115,7 @@ class OrderMethodContent extends Component {
   renderProceedButton = () => {
     const { onProceed } = this.props
     return (
-      <CustomButton
+      <StandardButton
         titleButton='Proceed to Order'
         buttonStyle={styles['proceed__button']}
         onPress={onProceed}
