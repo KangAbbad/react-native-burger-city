@@ -1,0 +1,185 @@
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native'
+
+import { BaseStyles } from '../../../../constant'
+import { StandardButton } from '../../../global/CustomButton'
+
+import menuMeals from '../../../../assets/images/menu-meals.png'
+import menuSalads from '../../../../assets/images/menu-salads.png'
+import menuDesserts from '../../../../assets/images/menu-desserts.png'
+import menuBeverages from '../../../../assets/images/menu-beverages.png'
+
+class MenuContent extends Component {
+  render () {
+    return (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        stickyHeaderIndices={[0]}
+      >
+        {this.renderInfo()}
+        {this.renderMenuWrapper()}
+        {this.renderSecretMenu()}
+      </ScrollView>
+    )
+  }
+
+  renderInfo = () => {
+    const data = [
+      {
+        title: 'Delivery Address',
+        desc: 'No. 02, 6th Lane, Colombo 03'
+      },
+      {
+        title: 'Delivery Date & Time',
+        desc: '19 / 09 / 2018  06:50:00 PM'
+      }
+    ]
+
+    return (
+      <FlatList
+        data={data}
+        keyExtractor={(item, index) => item + index.toString()}
+        renderItem={this.renderDeckInfo}
+      />
+    )
+  }
+
+  renderDeckInfo = ({ item }) => {
+    return (
+      <View style={styles['deck-info']}>
+        <Text
+          style={[
+            BaseStyles['text'],
+            BaseStyles['text--3xl'],
+            BaseStyles['text--white'],
+            BaseStyles['text--bold']
+          ]}
+        >
+          {item.title}
+        </Text>
+
+        <Text
+          style={[
+            BaseStyles['text'],
+            BaseStyles['text--large'],
+            BaseStyles['text--orange'],
+            BaseStyles['text--bold']
+          ]}
+        >
+          {item.desc}
+        </Text>
+      </View>
+    )
+  }
+
+  renderMenuWrapper = () => {
+    const data = [
+      {
+        icon: menuMeals,
+        name: 'Ala cater & value meals'
+      },
+      {
+        icon: menuSalads,
+        name: 'Salads/sides'
+      },
+      {
+        icon: menuDesserts,
+        name: 'Desserts'
+      },
+      {
+        icon: menuBeverages,
+        name: 'Beverages'
+      }
+    ]
+
+    return (
+      <FlatList
+        data={data}
+        numColumns={2}
+        keyExtractor={(item, index) => item + index.toString()}
+        renderItem={this.renderMenuItem}
+        columnWrapperStyle={{ justifyContent: 'center' }}
+        contentContainerStyle={{ padding: 10 }}
+      />
+    )
+  }
+
+  renderMenuItem = ({ item }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {}}
+        style={styles['menu__button']}
+      >
+        <View style={styles['menu']}>
+          <Image
+            source={item.icon}
+            resizeMode='cover'
+            height={82}
+            width={111}
+          />
+
+          <Text
+            style={[
+              BaseStyles['text'],
+              BaseStyles['text--large'],
+              BaseStyles['text--black'],
+              BaseStyles['text--bold'],
+              {
+                marginTop: 15,
+                width: 75,
+                textAlign: 'center'
+              }
+            ]}
+          >
+            {item.name}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  renderSecretMenu = () => {
+    const { onProceed } = this.props
+    return (
+      <StandardButton
+        titleButton='Secret Menu'
+        buttonStyle={{
+          marginHorizontal: 20,
+          margin: 20
+        }}
+        onPress={onProceed}
+      />
+    )
+  }
+}
+
+MenuContent.propTypes = {
+  onProceed: PropTypes.func
+}
+
+export default MenuContent
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  'deck-info': {
+    backgroundColor: '#1C272E',
+    padding: 20
+  },
+  menu__button: {
+    borderRadius: 5,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    margin: 10,
+    paddingTop: 10,
+    paddingBottom: 15
+  },
+  menu: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})

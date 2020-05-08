@@ -2,10 +2,13 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Dimensions, Text } from 'react-native'
 import Carousel from 'react-native-snap-carousel'
 
+import { BaseStyles } from '../../constant'
 import Header from '../../components/global/Header'
 import OrderMethodContent from '../../components/scoped/OurBurgerComponents/OrderMethodContent'
 import DeliveryAddressContent from '../../components/scoped/OurBurgerComponents/DeliveryAddressContent'
 import PickupDateTimeContent from '../../components/scoped/OurBurgerComponents/PickupDateTimeContent'
+import MenuContent from '../../components/scoped/OurBurgerComponents/MenuContent'
+import DishContent from '../../components/scoped/OurBurgerComponents/DishContent'
 
 class OurBurgerScreen extends Component {
   constructor (props) {
@@ -40,7 +43,7 @@ class OurBurgerScreen extends Component {
     return (
       <Carousel
         ref={ref => { this.content = ref }}
-        data={[0, 1, 2]}
+        data={[0, 1, 2, 3, 4]}
         renderItem={this.renderSection}
         sliderHeight={height}
         sliderWidth={width}
@@ -77,10 +80,37 @@ class OurBurgerScreen extends Component {
             onProceed={() => this.content.snapToNext()}
           />
         )
+      case 3:
+        return (
+          <MenuContent
+            onProceed={() => this.content.snapToNext()}
+          />
+        )
+      case 4:
+        return (
+          <DishContent
+            onProceed={() => this.content.snapToNext()}
+          />
+        )
       default:
         return (
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>404 Not Found</Text>
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Text
+              style={[
+                BaseStyles['text'],
+                BaseStyles['text--2xl'],
+                BaseStyles['text--black'],
+                BaseStyles['text--bold']
+              ]}
+            >
+              404 Not Found
+            </Text>
           </View>
         )
     }

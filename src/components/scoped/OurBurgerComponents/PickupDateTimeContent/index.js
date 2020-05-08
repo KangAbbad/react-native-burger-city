@@ -13,7 +13,8 @@ class PickupDateTimeContent extends Component {
       <View style={styles['container']}>
         {this.renderEditDate()}
         {this.renderEditTime()}
-        {this.renderProceedButton()}
+        {this.renderNote()}
+        {this.renderSelectButton()}
       </View>
     )
   }
@@ -137,11 +138,26 @@ class PickupDateTimeContent extends Component {
     )
   }
 
-  renderProceedButton = () => {
+  renderNote = () => {
+    return (
+      <Text
+        style={[
+          BaseStyles['text'],
+          BaseStyles['text--large'],
+          BaseStyles['text--black'],
+          { marginTop: 30 }
+        ]}
+      >
+        Minimum of 90 minutes before Pickup time
+      </Text>
+    )
+  }
+
+  renderSelectButton = () => {
     const { onProceed } = this.props
     return (
       <StandardButton
-        titleButton='Proceed to Order'
+        titleButton='Select'
         onPress={onProceed}
         buttonStyle={styles['proceed-order__button']}
       />

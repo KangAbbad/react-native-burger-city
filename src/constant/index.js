@@ -11,11 +11,17 @@ export const BaseStyles = StyleSheet.create({
   'text--white': {
     color: '#FFFFFF'
   },
+  'text--orange': {
+    color: '#FF9F1C'
+  },
   'text--bold': {
     fontFamily: 'Nunito-Bold'
   },
   'text--semibold': {
     fontFamily: 'Nunito-SemiBold'
+  },
+  'text--xs': {
+    fontSize: 8
   },
   'text--small': {
     fontSize: 10
