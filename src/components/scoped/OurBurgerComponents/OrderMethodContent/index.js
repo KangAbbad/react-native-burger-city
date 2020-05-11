@@ -79,7 +79,7 @@ class OrderMethodContent extends Component {
           return (
             <IconButton
               titleButton={item.name}
-              iconButton={
+              iconRight={
                 <MaterialCommunityIcons
                   name='check-circle'
                   color={checkColor}

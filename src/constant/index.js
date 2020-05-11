@@ -8,6 +8,9 @@ export const BaseStyles = StyleSheet.create({
   'text--black': {
     color: '#1D2126'
   },
+  'text--gray': {
+    color: '#727C8E'
+  },
   'text--white': {
     color: '#FFFFFF'
   },

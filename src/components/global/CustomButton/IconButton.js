@@ -10,8 +10,10 @@ const IconButton = (props) => {
     avatarButton,
     titleButton,
     subtitleButton,
-    iconButton,
+    iconRight,
+    subtitleRight,
     buttonStyle,
+    subtitleStyle,
     onPress
   } = props
 
@@ -30,9 +32,11 @@ const IconButton = (props) => {
         <MiddleSection
           titleButton={titleButton}
           subtitleButton={subtitleButton}
+          subtitleStyle={subtitleStyle}
         />
         <RightSection
-          iconButton={iconButton}
+          iconRight={iconRight}
+          subtitleRight={subtitleRight}
         />
       </View>
     </TouchableOpacity>
@@ -40,18 +44,25 @@ const IconButton = (props) => {
 }
 
 const LeftSection = ({ avatarButton }) => {
-  return (
-    <View style={styles['section--left']}>
-      {avatarButton}
-    </View>
-  )
+  if (avatarButton) {
+    return (
+      <View style={styles['section--left']}>
+        {avatarButton}
+      </View>
+    )
+  }
+
+  return null
 }
 
-const MiddleSection = ({ titleButton, subtitleButton }) => {
+const MiddleSection = ({ titleButton, subtitleButton, subtitleStyle }) => {
   return (
-    <View style={{ marginLeft: 20 }}>
+    <View>
       <Title titleButton={titleButton} />
-      <Subtitle subtitleButton={subtitleButton} />
+      <Subtitle
+        subtitleButton={subtitleButton}
+        subtitleStyle={subtitleStyle}
+      />
     </View>
   )
 }
@@ -71,7 +82,7 @@ const Title = ({ titleButton }) => {
   )
 }
 
-const Subtitle = ({ subtitleButton }) => {
+const Subtitle = ({ subtitleButton, subtitleStyle }) => {
   if (subtitleButton) {
     return (
       <Text
@@ -80,6 +91,7 @@ const Subtitle = ({ subtitleButton }) => {
           BaseStyles['text--medium'],
           BaseStyles['text--semibold'],
           BaseStyles['text--orange'],
+          subtitleStyle,
           { marginTop: 3 }
         ]}
       >
@@ -91,10 +103,21 @@ const Subtitle = ({ subtitleButton }) => {
   return null
 }
 
-const RightSection = ({ iconButton }) => {
+const RightSection = ({ iconRight, subtitleRight }) => {
   return (
-    <View style={{ marginLeft: 'auto' }}>
-      {iconButton}
+    <View style={styles['section--right']}>
+      <Text
+        style={[
+          BaseStyles['text'],
+          BaseStyles['text--medium'],
+          BaseStyles['text--orange'],
+          BaseStyles['text--bold'],
+          { marginRight: 10 }
+        ]}
+      >
+        {subtitleRight}
+      </Text>
+      {iconRight}
     </View>
   )
 }
@@ -103,8 +126,13 @@ IconButton.propTypes = {
   avatarButton: PropTypes.object,
   titleButton: PropTypes.string,
   subtitleButton: PropTypes.string,
-  iconButton: PropTypes.element,
+  iconRight: PropTypes.element,
+  subtitleRight: PropTypes.string,
   buttonStyle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ]),
+  subtitleStyle: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array
   ]),
@@ -117,7 +145,11 @@ LeftSection.propTypes = {
 
 MiddleSection.propTypes = {
   titleButton: PropTypes.string,
-  subtitleButton: PropTypes.string
+  subtitleButton: PropTypes.string,
+  subtitleStyle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ])
 }
 
 Title.propTypes = {
@@ -125,16 +157,21 @@ Title.propTypes = {
 }
 
 Subtitle.propTypes = {
-  subtitleButton: PropTypes.string
+  subtitleButton: PropTypes.string,
+  subtitleStyle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ])
 }
 
 RightSection.propTypes = {
-  iconButton: PropTypes.object
+  iconRight: PropTypes.object,
+  subtitleRight: PropTypes.string
 }
 
 IconButton.defaultProps = {
   titleButton: 'Icon Button',
-  iconButton: (
+  iconRight: (
     <MaterialCommunityIcons
       name='xml'
       size={18}
@@ -161,6 +198,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     maxHeight: 60,
-    maxWidth: 60
+    maxWidth: 60,
+    marginRight: 20
+  },
+  'section--right': {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 'auto'
   }
 })

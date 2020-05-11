@@ -45,7 +45,7 @@ class PickupDateTimeContent extends Component {
 
         <IconButton
           titleButton='30 / 08 / 2018'
-          iconButton={
+          iconRight={
             <MaterialCommunityIcons
               name='calendar-star'
               size={18}
@@ -119,7 +119,7 @@ class PickupDateTimeContent extends Component {
 
           <IconButton
             titleButton='PM'
-            iconButton={
+            iconRight={
               <Ionicons
                 name='ios-arrow-dropdown-circle'
                 size={18}

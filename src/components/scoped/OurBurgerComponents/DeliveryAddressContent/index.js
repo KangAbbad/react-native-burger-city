@@ -167,7 +167,7 @@ class DeliveryAddressContent extends Component {
 
         <IconButton
           titleButton='No. 02, 6th Lane, Colombo 03'
-          iconButton={
+          iconRight={
             <EvilIcons
               name='pencil'
               size={20}
@@ -209,7 +209,7 @@ class DeliveryAddressContent extends Component {
 
         <IconButton
           titleButton='Delivery Date & Time'
-          iconButton={
+          iconRight={
             <EvilIcons
               name='pencil'
               size={20}

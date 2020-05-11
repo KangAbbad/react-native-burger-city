@@ -9,6 +9,10 @@ import DeliveryAddressContent from '../../components/scoped/OurBurgerComponents/
 import PickupDateTimeContent from '../../components/scoped/OurBurgerComponents/PickupDateTimeContent'
 import MenuContent from '../../components/scoped/OurBurgerComponents/MenuContent'
 import DishContent from '../../components/scoped/OurBurgerComponents/DishContent'
+import SelectedDishContent from '../../components/scoped/OurBurgerComponents/SelectedDishContent'
+import ChoicesDishContent from '../../components/scoped/OurBurgerComponents/ChoicesDishContent'
+import CartContent from '../../components/scoped/OurBurgerComponents/CartContent'
+import CartSubtotalContent from '../../components/scoped/OurBurgerComponents/CartSubtotalContent'
 
 class OurBurgerScreen extends Component {
   constructor (props) {
@@ -43,7 +47,7 @@ class OurBurgerScreen extends Component {
     return (
       <Carousel
         ref={ref => { this.content = ref }}
-        data={[0, 1, 2, 3, 4]}
+        data={[0, 1, 2, 3, 4, 5, 6, 7, 8]}
         renderItem={this.renderSection}
         sliderHeight={height}
         sliderWidth={width}
@@ -89,6 +93,30 @@ class OurBurgerScreen extends Component {
       case 4:
         return (
           <DishContent
+            onProceed={() => this.content.snapToNext()}
+          />
+        )
+      case 5:
+        return (
+          <SelectedDishContent
+            onProceed={() => this.content.snapToNext()}
+          />
+        )
+      case 6:
+        return (
+          <ChoicesDishContent
+            onProceed={() => this.content.snapToNext()}
+          />
+        )
+      case 7:
+        return (
+          <CartContent
+            onProceed={() => this.content.snapToNext()}
+          />
+        )
+      case 8:
+        return (
+          <CartSubtotalContent
             onProceed={() => this.content.snapToNext()}
           />
         )
