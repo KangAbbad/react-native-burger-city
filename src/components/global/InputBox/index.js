@@ -5,7 +5,9 @@ import { View, TextInput, StyleSheet } from 'react-native'
 const InputBox = (props) => {
   const inputStyle = [
     styles['input-box'],
-    props.icon === null && { paddingLeft: 20 }
+    props.icon === null && {
+      paddingLeft: 20
+    }
   ]
 
   const onChangeText = (value) => {
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
     height: 45,
     fontFamily: 'Nunito-Regular',
     fontSize: 14,
-    color: '#727c8e',
+    color: '#727C8E',
     paddingRight: 30
   }
 })

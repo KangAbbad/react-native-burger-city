@@ -18,7 +18,7 @@ import SignUpScreen from './src/screens/SignUpScreen'
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen'
 import HomeScreen from './src/screens/HomeScreen'
 import OurBurgerScreen from './src/screens/OurBurgerScreen'
-import FavoriteScreen from './src/screens/FavoriteScreen'
+import FavouriteScreen from './src/screens/FavouriteScreen'
 import TrackOrderScreen from './src/screens/TrackOrderScreen'
 import WalletScreen from './src/screens/WalletScreen'
 
@@ -92,8 +92,8 @@ const allTab = [
     }
   },
   {
-    name: 'FavoriteScreen',
-    component: FavoriteScreen,
+    name: 'FavouriteScreen',
+    component: FavouriteScreen,
     label: 'Favourite',
     icon: {
       active: StarIconActive,

@@ -17,12 +17,16 @@ export const BaseStyles = StyleSheet.create({
   'text--orange': {
     color: '#FF9F1C'
   },
+  'text--extrabold': {
+    fontFamily: 'Nunito-ExtraBold'
+  },
   'text--bold': {
     fontFamily: 'Nunito-Bold'
   },
   'text--semibold': {
     fontFamily: 'Nunito-SemiBold'
   },
+
   'text--xs': {
     fontSize: 8
   },
@@ -44,6 +48,10 @@ export const BaseStyles = StyleSheet.create({
   'text--3xl': {
     fontSize: 20
   },
+  'text--giant': {
+    fontSize: 45
+  },
+
   'text--left': {
     textAlign: 'left'
   },
