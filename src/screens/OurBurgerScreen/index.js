@@ -13,6 +13,8 @@ import SelectedDishContent from '../../components/scoped/OurBurgerComponents/Sel
 import ChoicesDishContent from '../../components/scoped/OurBurgerComponents/ChoicesDishContent'
 import CartContent from '../../components/scoped/OurBurgerComponents/CartContent'
 import CartSubtotalContent from '../../components/scoped/OurBurgerComponents/CartSubtotalContent'
+import CondimentsContent from '../../components/scoped/OurBurgerComponents/CondimentsContent'
+import CartTotalContent from '../../components/scoped/OurBurgerComponents/CartTotalContent'
 
 class OurBurgerScreen extends Component {
   constructor (props) {
@@ -47,7 +49,7 @@ class OurBurgerScreen extends Component {
     return (
       <Carousel
         ref={ref => { this.content = ref }}
-        data={[0, 1, 2, 3, 4, 5, 6, 7, 8]}
+        data={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
         renderItem={this.renderSection}
         sliderHeight={height}
         sliderWidth={width}
@@ -117,6 +119,18 @@ class OurBurgerScreen extends Component {
       case 8:
         return (
           <CartSubtotalContent
+            onProceed={() => this.content.snapToNext()}
+          />
+        )
+      case 9:
+        return (
+          <CondimentsContent
+            onProceed={() => this.content.snapToNext()}
+          />
+        )
+      case 10:
+        return (
+          <CartTotalContent
             onProceed={() => this.content.snapToNext()}
           />
         )

@@ -43,5 +43,14 @@ export const BaseStyles = StyleSheet.create({
   },
   'text--3xl': {
     fontSize: 20
+  },
+  'text--left': {
+    textAlign: 'left'
+  },
+  'text--center': {
+    textAlign: 'center'
+  },
+  'text--right': {
+    textAlign: 'right'
   }
 })

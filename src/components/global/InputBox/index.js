@@ -3,6 +3,17 @@ import PropTypes from 'prop-types'
 import { View, TextInput, StyleSheet } from 'react-native'
 
 const InputBox = (props) => {
+  const inputStyle = [
+    styles['input-box'],
+    props.icon === null && { paddingLeft: 20 }
+  ]
+
+  const onChangeText = (value) => {
+    if (props.onHandleInput) {
+      props.onHandleInput(props.name, value)
+    }
+  }
+
   return (
     <View
       style={[
@@ -10,22 +21,32 @@ const InputBox = (props) => {
         styles['container']
       ]}
     >
-      <props.icon.type
-        name={props.icon.name}
-        color={props.icon.color}
-        size={props.icon.size}
-        style={props.icon.style}
-      />
+      <IconInput icon={props.icon} />
       <TextInput
         placeholder={props.placeholder}
         placeholderTextColor='#727c8e'
         secureTextEntry={props.password}
         value={props.value}
-        style={styles['input-box']}
-        onChangeText={(value) => props.onHandleInput(props.name, value)}
+        style={inputStyle}
+        onChangeText={onChangeText}
       />
     </View>
   )
+}
+
+const IconInput = ({ icon }) => {
+  if (icon) {
+    return (
+      <icon.type
+        name={icon.name}
+        color={icon.color}
+        size={icon.size}
+        style={icon.style}
+      />
+    )
+  }
+
+  return null
 }
 
 InputBox.propTypes = {
@@ -39,6 +60,19 @@ InputBox.propTypes = {
     PropTypes.array
   ]),
   onHandleInput: PropTypes.func
+}
+
+IconInput.propTypes = {
+  icon: PropTypes.object
+}
+
+InputBox.defaultProps = {
+  containerStyle: {},
+  icon: null,
+  placeholder: 'Custom input box',
+  password: false,
+  value: '',
+  onHandleInput: null
 }
 
 export default InputBox
@@ -57,7 +91,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito-Regular',
     fontSize: 14,
     color: '#727c8e',
-    // includeFontPadding: false,
     paddingRight: 30
   }
 })

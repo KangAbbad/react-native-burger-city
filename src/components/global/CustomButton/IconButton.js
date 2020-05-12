@@ -14,6 +14,7 @@ const IconButton = (props) => {
     subtitleRight,
     buttonStyle,
     subtitleStyle,
+    disabled,
     onPress
   } = props
 
@@ -24,6 +25,7 @@ const IconButton = (props) => {
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={disabled}
     >
       <View style={wrapperStyle}>
         <LeftSection
@@ -136,6 +138,7 @@ IconButton.propTypes = {
     PropTypes.object,
     PropTypes.array
   ]),
+  disabled: PropTypes.bool,
   onPress: PropTypes.func
 }
 
@@ -179,6 +182,7 @@ IconButton.defaultProps = {
     />
   ),
   buttonStyle: {},
+  disabled: false,
   onPress: () => {}
 }
 

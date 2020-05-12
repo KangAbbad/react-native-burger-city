@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, Image, TextInput, ScrollView } from 'react-native'
+import PropTypes from 'prop-types'
+import { StyleSheet, View, Text, TextInput, ScrollView } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import { BaseStyles } from '../../../../constant'
-
-import menuMeals from '../../../../assets/images/menu-meals.png'
 import { IconButton, StandardButton } from '../../../global/CustomButton'
+import CardOrder from '../../../global/CardOrder'
 
 class CartSubtotalContent extends Component {
   render () {
@@ -61,77 +61,16 @@ class CartSubtotalContent extends Component {
 
   renderReceipt = () => {
     return (
-      <View style={styles['receipt']}>
-        <Image
-          source={menuMeals}
-          style={styles['receipt__icon']}
-        />
-
-        <View style={styles['receipt__info']}>
-          <Text
-            style={[
-              BaseStyles['text'],
-              BaseStyles['text--large'],
-              BaseStyles['text--black'],
-              BaseStyles['text--semibold']
-            ]}
-          >
-            1 Cheese Burger meal
-          </Text>
-          <Text
-            style={[
-              BaseStyles['text'],
-              BaseStyles['text--large'],
-              BaseStyles['text--gray'],
-              { marginTop: 10 }
-            ]}
-          >
-            Cheese Burger
-          </Text>
-          <Text
-            style={[
-              BaseStyles['text'],
-              BaseStyles['text--large'],
-              BaseStyles['text--gray']
-            ]}
-          >
-            Fries pack
-          </Text>
-          <Text
-            style={[
-              BaseStyles['text'],
-              BaseStyles['text--large'],
-              BaseStyles['text--gray']
-            ]}
-          >
-            Coca Cola (250ml)
-          </Text>
-          <Text
-            style={[
-              BaseStyles['text'],
-              BaseStyles['text--large'],
-              BaseStyles['text--gray']
-            ]}
-          >
-            No Add On
-          </Text>
-          <Text
-            style={[
-              BaseStyles['text'],
-              BaseStyles['text--large'],
-              BaseStyles['text--orange'],
-              BaseStyles['text--bold'],
-              {
-                marginTop: 30,
-                marginRight: 20,
-                marginLeft: 'auto'
-              }
-            ]}
-          >
-            520 LKR
-          </Text>
-        </View>
-      </View>
+      <CardOrder
+        mealPackage='1 Cheese Burger meal'
+        listPackage={[
+          'Cheese Burger',
+          'Fries pack',
+          'Coca Cola (250ml)',
+          'No Add On'
+        ]}
+        price={520}
+      />
     )
   }
 
@@ -187,14 +126,19 @@ class CartSubtotalContent extends Component {
   }
 
   renderCheckoutButton = () => {
+    const { onProceed } = this.props
     return (
       <StandardButton
         titleButton='Check Out'
         buttonStyle={{ marginTop: 50 }}
-        onPress={() => {}}
+        onPress={onProceed}
       />
     )
   }
+}
+
+CartSubtotalContent.propTypes = {
+  onProceed: PropTypes.func
 }
 
 export default CartSubtotalContent
@@ -212,23 +156,6 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20
-  },
-  receipt: {
-    borderRadius: 10,
-    overflow: 'hidden',
-    flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 20
-  },
-  receipt__icon: {
-    height: 130,
-    width: 155,
-    marginTop: -20,
-    marginLeft: -40
-  },
-  receipt__info: {
-    flex: 1,
-    marginLeft: 20
   },
   'promote-code': {
     marginTop: 20

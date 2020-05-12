@@ -15,8 +15,14 @@ class Stepper extends Component {
 
   render () {
     const { countNumber } = this.state
+    const { containerStyle } = this.props
+    const wrapperStyle = [
+      styles['container'],
+      containerStyle
+    ]
+
     return (
-      <View style={styles['container']}>
+      <View style={wrapperStyle}>
         <TouchableOpacity
           onPress={this.countDown}
           style={{ padding: 10 }}
@@ -61,7 +67,9 @@ class Stepper extends Component {
       countNumber: prevState.countNumber + 1
     }), () => {
       const { counter } = this.props
-      counter(this.state.countNumber)
+      if (counter) {
+        counter(this.state.countNumber)
+      }
     })
 
     // const plus = prevState => ({
@@ -81,8 +89,6 @@ class Stepper extends Component {
     //   newCountNumber = countNumber - 1
     // }
     // this.setState({ countNumber: newCountNumber })
-    const { counter } = this.props
-
     this.setState(prevState => {
       if (prevState.countNumber > 1) {
         return {
@@ -90,13 +96,20 @@ class Stepper extends Component {
         }
       }
     }, () => {
-      counter(this.state.countNumber)
+      const { counter } = this.props
+      if (counter) {
+        counter(this.state.countNumber)
+      }
     })
   }
 }
 
 Stepper.propTypes = {
-  counter: PropTypes.func
+  counter: PropTypes.func,
+  containerStyle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ])
 }
 
 export default Stepper
