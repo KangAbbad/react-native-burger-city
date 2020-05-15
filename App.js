@@ -11,6 +11,10 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import { YellowBox } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+
+import reducers from './src/redux/reducers'
 
 import OnboardingScreen from './src/screens/OnboardingScreen'
 import LoginScreen from './src/screens/LoginScreen'
@@ -36,39 +40,43 @@ import WalletIconActive from './src/assets/icons/wallet-icon-active.svg'
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
 
+const store = createStore(reducers)
+
 const App = () => {
   YellowBox.ignoreWarnings(['FlatList: Calling `getNode()`'])
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName='HomeTab'
-        screenOptions={{
-          headerShown: false,
-          ...TransitionPresets.SlideFromRightIOS
-        }}
-      >
-        <Stack.Screen
-          name='OnboardingScreen'
-          component={OnboardingScreen}
-        />
-        <Stack.Screen
-          name='LoginScreen'
-          component={LoginScreen}
-        />
-        <Stack.Screen
-          name='SignUpScreen'
-          component={SignUpScreen}
-        />
-        <Stack.Screen
-          name='ForgotPasswordScreen'
-          component={ForgotPasswordScreen}
-        />
-        <Stack.Screen
-          name='HomeTab'
-          component={HomeTab}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName='HomeTab'
+          screenOptions={{
+            headerShown: false,
+            ...TransitionPresets.SlideFromRightIOS
+          }}
+        >
+          <Stack.Screen
+            name='OnboardingScreen'
+            component={OnboardingScreen}
+          />
+          <Stack.Screen
+            name='LoginScreen'
+            component={LoginScreen}
+          />
+          <Stack.Screen
+            name='SignUpScreen'
+            component={SignUpScreen}
+          />
+          <Stack.Screen
+            name='ForgotPasswordScreen'
+            component={ForgotPasswordScreen}
+          />
+          <Stack.Screen
+            name='HomeTab'
+            component={HomeTab}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   )
 }
 

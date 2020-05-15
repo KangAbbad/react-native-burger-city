@@ -1,33 +1,32 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, StatusBar, Text, Image, Dimensions, ImageBackground, ScrollView, FlatList } from 'react-native'
+import PropTypes from 'prop-types'
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  Text,
+  Image,
+  Dimensions,
+  ImageBackground,
+  ScrollView,
+  FlatList
+} from 'react-native'
 import Carousel, { Pagination } from 'react-native-snap-carousel'
 import StarRating from 'react-native-star-rating'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 import Header from '../../components/global/Header'
 
 import burgerLogo from '../../assets/icons/burger-city-logo.png'
-import sliderImg from '../../assets/images/slider-image.png'
 import ticketBg from '../../assets/images/ticket-background.png'
-import offer1 from '../../assets/images/image-1.png'
-import offer2 from '../../assets/images/image-2.png'
-import offer3 from '../../assets/images/image-15.png'
 
 class HomeScreen extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      activeSlide: 0,
-      bestOffer: [
-        {
-          image: offer1
-        },
-        {
-          image: offer2
-        },
-        {
-          image: offer3
-        }
-      ]
+      activeSlide: 0
     }
   }
 
@@ -36,7 +35,9 @@ class HomeScreen extends Component {
       <View style={styles['container']}>
         {this.renderStatusBar()}
         {this.renderHeader()}
-        <ScrollView>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+        >
           {this.renderSlider()}
           {this.renderOrder()}
           {this.renderBestOffer()}
@@ -72,14 +73,15 @@ class HomeScreen extends Component {
 
   renderCarousel = () => {
     const { width } = Dimensions.get('window')
+    const { banners } = this.props
     return (
       <Carousel
-        data={[0, 0, 0]}
-        renderItem={this.renderCarouselItem}
+        data={banners}
         decelerationRate='fast'
         sliderWidth={width}
         itemWidth={width}
         inactiveSlideScale={1}
+        renderItem={this.renderCarouselItem}
         onSnapToItem={index => this.setState({ activeSlide: index })}
       />
     )
@@ -88,23 +90,28 @@ class HomeScreen extends Component {
   renderCarouselItem = ({ item }) => {
     return (
       <View styles={styles['home__slider__wrapper']}>
-        <Image
-          source={sliderImg}
+        <ImageBackground
+          // styles={styles['home__slider__image__wrapper']}
+          source={{ uri: item.imageUrl }}
           resizeMode='cover'
-        />
+          style={styles['home__slider__image']}
+        >
+          <View style={styles['home__slider__image__overlay']} />
+          <Text style={styles['home__slider__text']}>
+            {item.lead}
+          </Text>
+        </ImageBackground>
 
-        <Text style={styles['home__slider__text']}>
-          World's Greatest Burgers.
-        </Text>
       </View>
     )
   }
 
   renderCarouselPagination () {
     const { activeSlide } = this.state
+    const { banners } = this.props
     return (
       <Pagination
-        dotsLength={3}
+        dotsLength={banners.length}
         activeDotIndex={activeSlide}
         dotStyle={styles['home__pagination__dot']}
         dotContainerStyle={styles['home__pagination__dot__container']}
@@ -151,7 +158,7 @@ class HomeScreen extends Component {
   }
 
   renderBestOffer = () => {
-    const { bestOffer } = this.state
+    const { bestOffers } = this.props
 
     return (
       <View style={styles['home__best-offer']}>
@@ -160,7 +167,7 @@ class HomeScreen extends Component {
         </Text>
 
         <FlatList
-          data={bestOffer}
+          data={bestOffers}
           keyExtractor={(item, index) => item + index.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -173,26 +180,28 @@ class HomeScreen extends Component {
 
   renderBestOfferItem = ({ item }) => {
     return (
-      <View>
+      <View style={styles['home__best-offer__item']}>
         <Image
-          source={item.image}
-          resizeMode='contain'
+          source={{ uri: item.imageUrl }}
           style={styles['home__best-offer__image']}
         />
 
         <View style={styles['home__best-offer__info']}>
-          <Text style={styles['home__best-offer__name']}>
-            Beef Burger
+          <Text
+            style={styles['home__best-offer__name']}
+            numberOfLines={2}
+          >
+            {item.name}
           </Text>
           <Text style={styles['home__best-offer__price']}>
-            $12
+            ${item.price}
           </Text>
         </View>
 
         <StarRating
           disabled
           maxStars={5}
-          rating={3}
+          rating={item.rating}
           starSize={10}
           fullStarColor='#FF9F1C'
           emptyStar='star'
@@ -204,7 +213,21 @@ class HomeScreen extends Component {
   }
 }
 
-export default HomeScreen
+HomeScreen.propTypes = {
+  banners: PropTypes.array,
+  bestOffers: PropTypes.array
+}
+
+const mapStateToProps = (state) => {
+  const { banners, bestOffers } = state.home
+  return { banners, bestOffers }
+}
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({}, dispatch)
+)
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
 
 const styles = StyleSheet.create({
   container: {
@@ -215,6 +238,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingTop: 100
   },
+  home__slider__image: {
+    height: 210,
+    width: '100%'
+  },
+  home__slider__image__overlay: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)'
+  },
   home__slider__text: {
     position: 'absolute',
     top: 20,
@@ -222,7 +257,8 @@ const styles = StyleSheet.create({
     width: 250,
     fontFamily: 'Nunito-Bold',
     fontSize: 28,
-    color: '#ffffff'
+    color: '#ffffff',
+    lineHeight: 35
   },
   home__pagination__dot__container: {
     marginHorizontal: 2
@@ -248,7 +284,7 @@ const styles = StyleSheet.create({
   },
   home__order__ticket: {
     marginHorizontal: 20,
-    marginTop: 18
+    marginTop: 15
   },
   home__order__ticket__content: {
     flexDirection: 'row',
@@ -275,6 +311,10 @@ const styles = StyleSheet.create({
     marginTop: 25,
     marginBottom: 25
   },
+  'home__best-offer__item': {
+    overflow: 'hidden',
+    width: 150
+  },
   'home__best-offer__title': {
     fontFamily: 'Nunito-Bold',
     fontSize: 18,
@@ -283,34 +323,40 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   'home__best-offer__list': {
-    paddingHorizontal: 13,
+    paddingHorizontal: 10,
     marginTop: 15
   },
   'home__best-offer__image': {
+    borderRadius: 10,
+    alignSelf: 'center',
+    height: 175,
+    width: 125,
     marginHorizontal: 7
   },
   'home__best-offer__info': {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 15,
     marginHorizontal: 10
   },
   'home__best-offer__name': {
+    flex: 1.5,
     fontFamily: 'Nunito-Regular',
     fontSize: 14,
     color: '#1D2126',
     includeFontPadding: false
   },
   'home__best-offer__price': {
+    flex: 0.5,
     fontFamily: 'Nunito-Bold',
-    fontSize: 12,
+    fontSize: 14,
     color: '#FF9F1C',
+    textAlign: 'right',
     includeFontPadding: false
   },
   'home__best-offer__rate': {
     marginLeft: 10,
-    marginTop: 5,
-    paddingRight: 60
+    marginTop: 10,
+    paddingRight: 70
   }
 })

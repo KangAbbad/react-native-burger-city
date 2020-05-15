@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { View, StyleSheet, Dimensions, Text } from 'react-native'
 import Carousel from 'react-native-snap-carousel'
 
@@ -131,7 +132,7 @@ class OurBurgerScreen extends Component {
       case 10:
         return (
           <CartTotalContent
-            onProceed={() => this.content.snapToNext()}
+            onProceed={() => this.props.navigation.navigate('WalletScreen')}
           />
         )
       default:
@@ -157,6 +158,10 @@ class OurBurgerScreen extends Component {
         )
     }
   }
+}
+
+OurBurgerScreen.propTypes = {
+  navigation: PropTypes.object
 }
 
 export default OurBurgerScreen
