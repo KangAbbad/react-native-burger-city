@@ -3,30 +3,14 @@ import PropTypes from 'prop-types'
 import { View, StyleSheet, Text, FlatList } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { onSelectOrderMethod } from '../../../../redux/actions/ourBurgers'
+
 import { StandardButton, IconButton } from '../../../global/CustomButton'
 import { BaseStyles } from '../../../../constant'
 
 class OrderMethodContent extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      methods: [
-        {
-          name: 'In-Store',
-          isActive: false
-        },
-        {
-          name: 'Delivery',
-          isActive: true
-        },
-        {
-          name: 'Drive-Thru',
-          isActive: false
-        }
-      ]
-    }
-  }
-
   render () {
     return (
       <View style={styles['content']}>
@@ -67,11 +51,11 @@ class OrderMethodContent extends Component {
   }
 
   renderMethodList = () => {
-    const { methods } = this.state
+    const { orderMethod, onSelectOrderMethod } = this.props
 
     return (
       <FlatList
-        data={methods}
+        data={orderMethod}
         keyExtractor={(item, index) => item + index.toString()}
         style={styles['order-method__list']}
         renderItem={({ item, index }) => {
@@ -87,29 +71,12 @@ class OrderMethodContent extends Component {
                 />
               }
               buttonStyle={{ marginTop: 20 }}
-              onPress={() => this.onPressMethod(index)}
+              onPress={() => onSelectOrderMethod(index)}
             />
           )
         }}
       />
     )
-  }
-
-  onPressMethod = (index) => {
-    const { methods } = this.state
-    const newMethods = []
-
-    methods.map((item, i) => {
-      newMethods.push(item)
-
-      if (index === i) {
-        newMethods[index].isActive = true
-      } else {
-        newMethods[i].isActive = false
-      }
-    })
-
-    this.setState({ methods: newMethods })
   }
 
   renderProceedButton = () => {
@@ -125,10 +92,21 @@ class OrderMethodContent extends Component {
 }
 
 OrderMethodContent.propTypes = {
-  onProceed: PropTypes.func
+  onProceed: PropTypes.func,
+  orderMethod: PropTypes.array,
+  onSelectOrderMethod: PropTypes.func
 }
 
-export default OrderMethodContent
+const mapStateToProps = (state) => {
+  const { orderMethod } = state.ourBurgers
+  return { orderMethod }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ onSelectOrderMethod }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderMethodContent)
 
 const styles = StyleSheet.create({
   content: {

@@ -101,7 +101,6 @@ class HomeScreen extends Component {
             {item.lead}
           </Text>
         </ImageBackground>
-
       </View>
     )
   }

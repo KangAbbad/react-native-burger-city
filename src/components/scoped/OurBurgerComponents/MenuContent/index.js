@@ -2,13 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native'
 
+import { connect } from 'react-redux'
+// import { bindActionCreators } from 'redux'
+// import { onSwitchMenu } from '../../../../redux/actions/ourBurgers'
+
 import { BaseStyles } from '../../../../constant'
 import { StandardButton } from '../../../global/CustomButton'
-
-import menuMeals from '../../../../assets/images/menu-meals.png'
-import menuSalads from '../../../../assets/images/menu-salads.png'
-import menuDesserts from '../../../../assets/images/menu-desserts.png'
-import menuBeverages from '../../../../assets/images/menu-beverages.png'
 
 class MenuContent extends Component {
   render () {
@@ -74,28 +73,10 @@ class MenuContent extends Component {
   }
 
   renderMenuWrapper = () => {
-    const data = [
-      {
-        icon: menuMeals,
-        name: 'Ala cater & value meals'
-      },
-      {
-        icon: menuSalads,
-        name: 'Salads/sides'
-      },
-      {
-        icon: menuDesserts,
-        name: 'Desserts'
-      },
-      {
-        icon: menuBeverages,
-        name: 'Beverages'
-      }
-    ]
-
+    const { menuCategories } = this.props
     return (
       <FlatList
-        data={data}
+        data={menuCategories}
         numColumns={2}
         keyExtractor={(item, index) => item + index.toString()}
         renderItem={this.renderMenuItem}
@@ -106,9 +87,10 @@ class MenuContent extends Component {
   }
 
   renderMenuItem = ({ item }) => {
+    const { onSwitchMenu } = this.props
     return (
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={() => onSwitchMenu(item.name)}
         style={styles['menu__button']}
       >
         <View style={styles['menu']}>
@@ -155,10 +137,21 @@ class MenuContent extends Component {
 }
 
 MenuContent.propTypes = {
-  onProceed: PropTypes.func
+  onProceed: PropTypes.func,
+  menuCategories: PropTypes.array,
+  onSwitchMenu: PropTypes.func
 }
 
-export default MenuContent
+const mapStateToProps = state => {
+  const { menuCategories } = state.ourBurgers
+  return { menuCategories }
+}
+
+// const mapDispatchToProps = dispatch => {
+//   bindActionCreators({}, dispatch)
+// }
+
+export default connect(mapStateToProps, null)(MenuContent)
 
 const styles = StyleSheet.create({
   container: {

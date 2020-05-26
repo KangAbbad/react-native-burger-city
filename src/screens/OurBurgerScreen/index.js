@@ -51,14 +51,14 @@ class OurBurgerScreen extends Component {
       <Carousel
         ref={ref => { this.content = ref }}
         data={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-        renderItem={this.renderSection}
         sliderHeight={height}
         sliderWidth={width}
         itemHeight={height}
         itemWidth={width}
         inactiveSlideScale={1}
         scrollEnabled={false}
-        onSnapToItem={this.onSnap}
+        renderItem={this.renderSection}
+        onBeforeSnapToItem={this.onSnap}
       />
     )
   }

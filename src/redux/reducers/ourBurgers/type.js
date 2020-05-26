@@ -1,0 +1,2 @@
+export const SWITCH_MENU = 'SWITCH_MENU'
+export const SELECT_ORDER_METHOD = 'SELECT_ORDER_METHOD'

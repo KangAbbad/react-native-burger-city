@@ -12,7 +12,8 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import { YellowBox } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 
 import reducers from './src/redux/reducers'
 
@@ -40,7 +41,7 @@ import WalletIconActive from './src/assets/icons/wallet-icon-active.svg'
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
 
-const store = createStore(reducers)
+const store = createStore(reducers, applyMiddleware(thunk))
 
 const App = () => {
   YellowBox.ignoreWarnings(['FlatList: Calling `getNode()`'])
