@@ -48,6 +48,9 @@ export const BaseStyles = StyleSheet.create({
   'text--3xl': {
     fontSize: 20
   },
+  'text--4xl': {
+    fontSize: 22
+  },
   'text--giant': {
     fontSize: 45
   },

@@ -27,41 +27,107 @@ const INITIAL_STATE = {
   menuCategories: [
     {
       icon: menuMeals,
-      name: 'Ala cater & value meals'
+      name: 'Ala cater & value meals',
+      menu: [
+        {
+          name: 'Chicken Burger',
+          price: 12,
+          isNewProduct: false
+        },
+        {
+          name: 'Chicken Spicy Burger',
+          price: 13,
+          isNewProduct: false
+        },
+        {
+          name: 'Beef Burger',
+          price: 15,
+          isNewProduct: false
+        },
+        {
+          name: 'Cheesy Burger',
+          price: 13,
+          isNewProduct: false
+        }
+      ]
     },
     {
       icon: menuSalads,
-      name: 'Salads/sides'
+      name: 'Salads/sides',
+      menu: [
+        {
+          name: 'Chicken Burger',
+          price: 12,
+          isNewProduct: false
+        },
+        {
+          name: 'Chicken Spicy Burger',
+          price: 13,
+          isNewProduct: false
+        },
+        {
+          name: 'Beef Burger',
+          price: 15,
+          isNewProduct: false
+        },
+        {
+          name: 'Cheesy Burger',
+          price: 13,
+          isNewProduct: false
+        }
+      ]
     },
     {
       icon: menuDesserts,
-      name: 'Desserts'
+      name: 'Desserts',
+      menu: [
+        {
+          name: 'Chicken Burger',
+          price: 12,
+          isNewProduct: false
+        },
+        {
+          name: 'Chicken Spicy Burger',
+          price: 13,
+          isNewProduct: false
+        },
+        {
+          name: 'Beef Burger',
+          price: 15,
+          isNewProduct: false
+        },
+        {
+          name: 'Cheesy Burger',
+          price: 13,
+          isNewProduct: false
+        }
+      ]
     },
     {
       icon: menuBeverages,
-      name: 'Beverages'
-    }
-  ],
-  menuMeals: [
-    {
-      name: 'Chicken Burger',
-      price: 12,
-      isNewProduct: false
-    },
-    {
-      name: 'Chicken Spicy Burger',
-      price: 13,
-      isNewProduct: false
-    },
-    {
-      name: 'Beef Burger',
-      price: 15,
-      isNewProduct: false
-    },
-    {
-      name: 'Cheesy Burger',
-      price: 13,
-      isNewProduct: false
+      name: 'Beverages',
+      menu: [
+        {
+          name: 'Chicken Burger',
+          price: 12,
+          isNewProduct: false
+        },
+        {
+          name: 'Chicken Spicy Burger',
+          price: 13,
+          isNewProduct: false
+        },
+        {
+          name: 'Beef Burger',
+          price: 15,
+          isNewProduct: false
+        },
+        {
+          name: 'Cheesy Burger',
+          price: 13,
+          isNewProduct: false
+        }
+      ]
     }
   ]
 }

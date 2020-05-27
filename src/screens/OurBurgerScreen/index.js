@@ -40,9 +40,18 @@ class OurBurgerScreen extends Component {
     return (
       <Header
         withBack={withBack}
-        onPressLeftButton={() => this.content.snapToPrev()}
+        onPressLeftButton={this.onBackHeader}
       />
     )
+  }
+
+  onBackHeader = () => {
+    const { slideActive } = this.state
+    if (slideActive === 3) {
+      this.content.snapToItem(1)
+    } else {
+      this.content.snapToPrev()
+    }
   }
 
   renderContent = () => {
@@ -78,7 +87,8 @@ class OurBurgerScreen extends Component {
       case 1:
         return (
           <DeliveryAddressContent
-            onProceed={() => this.content.snapToNext()}
+            onPickupTime={() => this.content.snapToItem(2)}
+            onProceed={() => this.content.snapToItem(3)}
           />
         )
       case 2:

@@ -63,6 +63,7 @@ class CardOrder extends Component {
       <FlatList
         data={listPackage}
         keyExtractor={(item, index) => item + index.toString()}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{ marginTop: 10 }}
         renderItem={this.renderPackageListItem}
       />

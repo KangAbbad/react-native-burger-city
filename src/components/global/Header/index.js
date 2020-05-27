@@ -3,10 +3,12 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { useNavigation } from '@react-navigation/native'
 
 import logo from '../../../assets/icons/logo.png'
 
 const Header = (props) => {
+  const navigation = useNavigation()
   return (
     <View style={styles['header']}>
       <LeftButton
@@ -22,7 +24,7 @@ const Header = (props) => {
       </View>
 
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={() => navigation.navigate('TrolleyScreen')}
         style={styles['btn']}
       >
         <FontAwesome

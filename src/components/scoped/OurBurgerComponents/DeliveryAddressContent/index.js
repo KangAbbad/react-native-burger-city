@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 
-import { StandardButton, IconButton } from '../../../global/CustomButton'
 import { BaseStyles } from '../../../../constant'
+import { StandardButton, IconButton } from '../../../global/CustomButton'
+import SlideUpModal from '../../../global/SlideUpModal'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 class DeliveryAddressContent extends Component {
   constructor (props) {
     super(props)
     this.state = {
       isOrderNow: true,
-      isOrderInAdvance: false
+      isOrderInAdvance: false,
+      isEditModal: false
     }
   }
 
@@ -21,6 +25,7 @@ class DeliveryAddressContent extends Component {
         {this.renderLead()}
         {this.renderSettingOrder()}
         {this.renderSettingContent()}
+        {this.renderEditModal()}
       </View>
     )
   }
@@ -152,6 +157,7 @@ class DeliveryAddressContent extends Component {
   }
 
   renderEditAddress = () => {
+    const { deliveryDetails } = this.props
     return (
       <View>
         <Text
@@ -166,7 +172,7 @@ class DeliveryAddressContent extends Component {
         </Text>
 
         <IconButton
-          titleButton='No. 02, 6th Lane, Colombo 03'
+          titleButton={deliveryDetails.address}
           iconRight={
             <EvilIcons
               name='pencil'
@@ -178,12 +184,14 @@ class DeliveryAddressContent extends Component {
             paddingRight: 15,
             marginTop: 18
           }}
+          onPress={this.onToggleModal}
         />
       </View>
     )
   }
 
   renderEditSchedule = () => {
+    const { onPickupTime } = this.props
     return (
       <View style={styles['schedule']}>
         <Text
@@ -220,6 +228,7 @@ class DeliveryAddressContent extends Component {
             paddingRight: 15,
             marginTop: 18
           }}
+          onPress={onPickupTime}
         />
       </View>
     )
@@ -235,13 +244,75 @@ class DeliveryAddressContent extends Component {
       />
     )
   }
+
+  onToggleModal = () => {
+    this.setState(prevState => ({
+      isEditModal: !prevState.isEditModal
+    }))
+  }
+
+  renderEditModal = () => {
+    const { isEditModal } = this.state
+    const { deliveryDetails } = this.props
+    return (
+      <SlideUpModal
+        isModalVisible={isEditModal}
+        onClose={this.onToggleModal}
+      >
+        <View style={styles['edit__modal']}>
+          <Text
+            style={[
+              BaseStyles['text'],
+              BaseStyles['text--large'],
+              BaseStyles['text--bold'],
+              BaseStyles['text--black']
+            ]}
+          >
+            Edit Address
+          </Text>
+
+          <TextInput
+            numberOfLines={5}
+            multiline
+            textAlignVertical='top'
+            value={deliveryDetails.address}
+            style={styles['edit__modal__textarea']}
+          />
+
+          <StandardButton
+            titleButton='Save'
+            buttonStyle={{
+              marginTop: 20,
+              paddingVertical: 10
+            }}
+          />
+        </View>
+      </SlideUpModal>
+    )
+  }
 }
 
 DeliveryAddressContent.propTypes = {
-  onProceed: PropTypes.func
+  onProceed: PropTypes.func,
+  onPickupTime: PropTypes.func,
+  deliveryDetails: PropTypes.object
 }
 
-export default DeliveryAddressContent
+DeliveryAddressContent.defaultProps = {
+  onProceed: () => {},
+  onPickupTime: () => {}
+}
+
+const mapStateToProps = (state) => {
+  const { deliveryDetails } = state.myOrder
+  return { deliveryDetails }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeliveryAddressContent)
 
 const styles = StyleSheet.create({
   container: {
@@ -288,5 +359,19 @@ const styles = StyleSheet.create({
   'proceed-order__button': {
     marginTop: 'auto',
     marginBottom: 30
+  },
+  edit__modal: {
+    paddingHorizontal: 20,
+    paddingBottom: 20
+  },
+  edit__modal__textarea: {
+    borderWidth: 1,
+    borderColor: '#EFEFEF',
+    borderRadius: 5,
+    fontFamily: 'Nunito-Regular',
+    fontSize: 14,
+    lineHeight: 22,
+    marginTop: 15,
+    padding: 15
   }
 })

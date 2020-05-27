@@ -1,7 +1,7 @@
 const INITIAL_STATE = {
   orderMethod: {},
   deliveryDetails: {
-    address: '',
+    address: 'Jl. Tembus Margowangsan Gerdu Trono, Jati, Sawangan',
     pickup: {
       date: '',
       time: ''
@@ -61,7 +61,7 @@ const INITIAL_STATE = {
 const myOrder = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     default:
-      break
+      return state
   }
 }
 

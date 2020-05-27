@@ -76,8 +76,10 @@ const Title = ({ titleButton }) => {
         BaseStyles['text'],
         BaseStyles['text--large'],
         BaseStyles['text--semibold'],
-        BaseStyles['text--black']
+        BaseStyles['text--black'],
+        { paddingRight: 40 }
       ]}
+      numberOfLines={1}
     >
       {titleButton}
     </Text>
