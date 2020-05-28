@@ -9,7 +9,8 @@ import {
   Dimensions,
   ImageBackground,
   ScrollView,
-  FlatList
+  FlatList,
+  TouchableOpacity
 } from 'react-native'
 import Carousel, { Pagination } from 'react-native-snap-carousel'
 import StarRating from 'react-native-star-rating'
@@ -178,41 +179,47 @@ class HomeScreen extends Component {
   }
 
   renderBestOfferItem = ({ item }) => {
+    const { navigation } = this.props
     return (
-      <View style={styles['home__best-offer__item']}>
-        <Image
-          source={{ uri: item.imageUrl }}
-          style={styles['home__best-offer__image']}
-        />
+      <TouchableOpacity
+        onPress={() => navigation.navigate('FoodDetailScreen')}
+      >
+        <View style={styles['home__best-offer__item']}>
+          <Image
+            source={{ uri: item.imageUrl }}
+            style={styles['home__best-offer__image']}
+          />
 
-        <View style={styles['home__best-offer__info']}>
-          <Text
-            style={styles['home__best-offer__name']}
-            numberOfLines={2}
-          >
-            {item.name}
-          </Text>
-          <Text style={styles['home__best-offer__price']}>
-            ${item.price}
-          </Text>
+          <View style={styles['home__best-offer__info']}>
+            <Text
+              style={styles['home__best-offer__name']}
+              numberOfLines={2}
+            >
+              {item.name}
+            </Text>
+            <Text style={styles['home__best-offer__price']}>
+              ${item.price}
+            </Text>
+          </View>
+
+          <StarRating
+            disabled
+            maxStars={5}
+            rating={item.rating}
+            starSize={10}
+            fullStarColor='#FF9F1C'
+            emptyStar='star'
+            emptyStarColor='#cecece'
+            containerStyle={styles['home__best-offer__rate']}
+          />
         </View>
-
-        <StarRating
-          disabled
-          maxStars={5}
-          rating={item.rating}
-          starSize={10}
-          fullStarColor='#FF9F1C'
-          emptyStar='star'
-          emptyStarColor='#cecece'
-          containerStyle={styles['home__best-offer__rate']}
-        />
-      </View>
+      </TouchableOpacity>
     )
   }
 }
 
 HomeScreen.propTypes = {
+  navigation: PropTypes.object,
   banners: PropTypes.array,
   bestOffers: PropTypes.array
 }

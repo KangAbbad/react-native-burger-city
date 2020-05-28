@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Dimensions } from 'react-native'
+import { StyleSheet, View, Dimensions, StatusBar } from 'react-native'
 import Modal from 'react-native-modal'
 
 const SlideUpModal = (props) => {
   const { isModalVisible, onClose, children } = props
   const { height, width } = Dimensions.get('window')
+
   return (
     <Modal
       isVisible={isModalVisible}
@@ -20,6 +21,12 @@ const SlideUpModal = (props) => {
       style={styles['container']}
     >
       <View style={styles['content']}>
+        <StatusBar
+          animated
+          translucent
+          barStyle='light-content'
+          backgroundColor='rgba(0, 0, 0, 0.7)'
+        />
         <View style={styles['double-dash']} />
         {children}
       </View>

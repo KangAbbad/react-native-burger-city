@@ -89,27 +89,25 @@ class TrolleyScreen extends Component {
           />
         )
       default:
-        return (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            <Text
-              style={[
-                BaseStyles['text'],
-                BaseStyles['text--2xl'],
-                BaseStyles['text--black'],
-                BaseStyles['text--bold']
-              ]}
-            >
-              404 Not Found
-            </Text>
-          </View>
-        )
+        return this.renderEmptyTrolley()
     }
+  }
+
+  renderEmptyTrolley = () => {
+    return (
+      <View style={styles['empty-trolley']}>
+        <Text
+          style={[
+            BaseStyles['text'],
+            BaseStyles['text--2xl'],
+            BaseStyles['text--black'],
+            BaseStyles['text--bold']
+          ]}
+        >
+          Let's Order Burger!
+        </Text>
+      </View>
+    )
   }
 }
 
@@ -122,5 +120,10 @@ export default TrolleyScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  'empty-trolley': {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })

@@ -27,6 +27,7 @@ import FavouriteScreen from './src/screens/FavouriteScreen'
 import TrackOrderScreen from './src/screens/TrackOrderScreen'
 import WalletScreen from './src/screens/WalletScreen'
 import TrolleyScreen from './src/screens/TrolleyScreen'
+import FoodDetailScreen from './src/screens/FoodDetailScreen'
 
 import HomeIconInactive from './src/assets/icons/home-icon.svg'
 import HomeIconActive from './src/assets/icons/home-icon-active.svg'
@@ -79,6 +80,10 @@ const App = () => {
           <Stack.Screen
             name='TrolleyScreen'
             component={TrolleyScreen}
+          />
+          <Stack.Screen
+            name='FoodDetailScreen'
+            component={FoodDetailScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

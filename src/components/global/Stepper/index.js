@@ -15,7 +15,7 @@ class Stepper extends Component {
 
   render () {
     const { countNumber } = this.state
-    const { containerStyle } = this.props
+    const { containerStyle, buttonStyle } = this.props
     const wrapperStyle = [
       styles['container'],
       containerStyle
@@ -27,11 +27,16 @@ class Stepper extends Component {
           onPress={this.countDown}
           style={{ padding: 10 }}
         >
-          <View style={styles['button']}>
+          <View
+            style={[
+              styles['button'],
+              buttonStyle
+            ]}
+          >
             <Entypo
               name='minus'
               size={16}
-              color='#727C8E'
+              color={buttonStyle && buttonStyle.color ? buttonStyle.color : '#727C8E'}
             />
           </View>
         </TouchableOpacity>
@@ -40,7 +45,13 @@ class Stepper extends Component {
           style={[
             BaseStyles['text'],
             BaseStyles['text--large'],
-            BaseStyles['text--black']
+            BaseStyles['text--black'],
+            containerStyle.color && {
+              color: containerStyle.color
+            },
+            containerStyle.fontSize && {
+              fontSize: containerStyle.fontSize
+            }
           ]}
         >
           {countNumber}
@@ -50,11 +61,16 @@ class Stepper extends Component {
           onPress={this.countUp}
           style={{ padding: 10 }}
         >
-          <View style={styles['button']}>
+          <View
+            style={[
+              styles['button'],
+              buttonStyle
+            ]}
+          >
             <Entypo
               name='plus'
               size={16}
-              color='#727C8E'
+              color={buttonStyle && buttonStyle.color ? buttonStyle.color : '#727C8E'}
             />
           </View>
         </TouchableOpacity>
@@ -109,7 +125,17 @@ Stepper.propTypes = {
   containerStyle: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array
+  ]),
+  buttonStyle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
   ])
+}
+
+Stepper.defaultProps = {
+  counter: () => {},
+  containerStyle: {},
+  buttonStyle: {}
 }
 
 export default Stepper

@@ -7,14 +7,26 @@ import Stepper from '../../../global/Stepper'
 import { StandardButton } from '../../../global/CustomButton'
 
 class TrolleyContent extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      orders: [0, 1, 2]
+    }
+  }
+
   render () {
-    return (
-      <View style={styles['container']}>
-        {this.renderLead()}
-        {this.renderOrderList()}
-        {this.renderCheckout()}
-      </View>
-    )
+    const { orders } = this.state
+    if (orders.length) {
+      return (
+        <View style={styles['container']}>
+          {this.renderLead()}
+          {this.renderOrderList()}
+          {this.renderCheckout()}
+        </View>
+      )
+    } else {
+      return this.renderEmptyTrolley()
+    }
   }
 
   renderLead = () => {
@@ -45,9 +57,10 @@ class TrolleyContent extends Component {
   }
 
   renderOrderList = () => {
+    const { orders } = this.state
     return (
       <FlatList
-        data={[0, 1, 2, 2, 3, 4]}
+        data={orders}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => item + index.toString()}
         contentContainerStyle={styles['order-list']}
@@ -163,6 +176,33 @@ class TrolleyContent extends Component {
     )
   }
 
+  renderEmptyTrolley = () => {
+    return (
+      <View style={styles['empty-trolley']}>
+        <Text
+          style={[
+            BaseStyles['text'],
+            BaseStyles['text--3xl'],
+            BaseStyles['text--black']
+          ]}
+        >
+          Let's Order Burger!
+        </Text>
+
+        <Text
+          style={[
+            BaseStyles['text'],
+            BaseStyles['text--large'],
+            BaseStyles['text--gray'],
+            { marginTop: 10 }
+          ]}
+        >
+          Made your happy day with our burger.
+        </Text>
+      </View>
+    )
+  }
+
   renderCheckout = () => {
     return (
       <View style={styles['checkout']}>
@@ -249,6 +289,12 @@ const styles = StyleSheet.create({
   },
   'order-detail__info': {
     marginTop: 15
+  },
+  'empty-trolley': {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF'
   },
   checkout: {
     borderTopWidth: 1,
