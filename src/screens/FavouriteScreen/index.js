@@ -1,44 +1,17 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, FlatList, Image } from 'react-native'
+import PropTypes from 'prop-types'
+import { View, StyleSheet, FlatList, Image, Text } from 'react-native'
 import { IconButton } from '../../components/global/CustomButton'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { onSelectItem } from '../../redux/actions/home'
+
+import { BaseStyles } from '../../constant'
 import Header from '../../components/global/Header'
 
-import chickenBigBurger from '../../assets/images/chicken-big-burger.png'
-import chickenSpicyBurger from '../../assets/images/chicken-spicy-burger.png'
-import beefBurger from '../../assets/images/beef-burger.png'
-import cheesyBurger from '../../assets/images/cheesy-burger.png'
-
 class FavoriteScreen extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      burgers: [
-        {
-          icon: chickenBigBurger,
-          name: 'Chicken Big Burger',
-          price: 380
-        },
-        {
-          icon: chickenSpicyBurger,
-          name: 'Chicken Spicy Burger',
-          price: 320
-        },
-        {
-          icon: beefBurger,
-          name: 'Beef Burger',
-          price: 420
-        },
-        {
-          icon: cheesyBurger,
-          name: 'Cheesy Burger',
-          price: 290
-        }
-      ]
-    }
-  }
-
   render () {
     return (
       <View style={styles['container']}>
@@ -53,37 +26,42 @@ class FavoriteScreen extends Component {
   }
 
   renderBurger = () => {
-    const { burgers } = this.state
-    return (
-      <FlatList
-        data={burgers}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item, index) => item + index.toString()}
-        renderItem={this.renderBurgerItem}
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-          paddingTop: 10
-        }}
-      />
-    )
+    const { favourites } = this.props
+    if (favourites.length) {
+      return (
+        <FlatList
+          data={favourites}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => item + index.toString()}
+          renderItem={this.renderBurgerItem}
+          contentContainerStyle={{ paddingBottom: 20 }}
+        />
+      )
+    } else {
+      return this.renderEmptyFavourite()
+    }
   }
 
   renderBurgerItem = ({ item }) => {
+    const { navigation, onSelectItem } = this.props
     return (
       <IconButton
         avatarButton={
           <Image
-            source={item.icon}
+            source={{ uri: item.imageUrl }}
             style={{
-              height: 40,
-              width: 50,
-              marginLeft: -3
+              borderRadius: 50,
+              height: 50,
+              width: 50
             }}
           />
         }
         titleButton={item.name}
-        subtitleButton={`${item.price} LKR`}
-        buttonStyle={{ marginTop: 15 }}
+        subtitleButton={`$${item.price.toString()}`}
+        buttonStyle={{
+          marginTop: 20,
+          marginHorizontal: 20
+        }}
         iconRight={
           <Ionicons
             name='ios-arrow-dropright-circle'
@@ -91,15 +69,67 @@ class FavoriteScreen extends Component {
             color='#E3E5E8'
           />
         }
+        onPress={() => {
+          onSelectItem(item)
+          navigation.navigate('FoodDetailScreen', { showDeleteItem: true })
+        }}
       />
+    )
+  }
+
+  renderEmptyFavourite = () => {
+    return (
+      <View style={styles['empty-favourite']}>
+        <Text
+          style={[
+            BaseStyles['text'],
+            BaseStyles['text--xxl'],
+            BaseStyles['text--black']
+          ]}
+        >
+          Let's find your favourite Burger!
+        </Text>
+
+        <Text
+          style={[
+            BaseStyles['text'],
+            BaseStyles['text--large'],
+            BaseStyles['text--gray'],
+            { marginTop: 3 }
+          ]}
+        >
+          Order and choose as your favourite!
+        </Text>
+      </View>
     )
   }
 }
 
-export default FavoriteScreen
+FavoriteScreen.propTypes = {
+  navigation: PropTypes.object,
+  favourites: PropTypes.array,
+  onSelectItem: PropTypes.func
+}
+
+const mapStateToProps = (state) => {
+  const { favourites } = state.home
+  return { favourites }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ onSelectItem }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FavoriteScreen)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  'empty-favourite': {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF'
   }
 })

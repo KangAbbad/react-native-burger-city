@@ -17,6 +17,7 @@ import StarRating from 'react-native-star-rating'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { onSelectItem } from '../../redux/actions/home'
 
 import Header from '../../components/global/Header'
 
@@ -179,10 +180,13 @@ class HomeScreen extends Component {
   }
 
   renderBestOfferItem = ({ item }) => {
-    const { navigation } = this.props
+    const { navigation, onSelectItem } = this.props
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('FoodDetailScreen')}
+        onPress={() => {
+          onSelectItem(item)
+          navigation.navigate('FoodDetailScreen', { showDeleteItem: false })
+        }}
       >
         <View style={styles['home__best-offer__item']}>
           <Image
@@ -198,7 +202,7 @@ class HomeScreen extends Component {
               {item.name}
             </Text>
             <Text style={styles['home__best-offer__price']}>
-              ${item.price}
+              ${item.price.toString()}
             </Text>
           </View>
 
@@ -221,17 +225,19 @@ class HomeScreen extends Component {
 HomeScreen.propTypes = {
   navigation: PropTypes.object,
   banners: PropTypes.array,
-  bestOffers: PropTypes.array
+  bestOffers: PropTypes.array,
+  onSelectItem: PropTypes.func
 }
 
 const mapStateToProps = (state) => {
-  const { banners, bestOffers } = state.home
+  const { banners } = state.home
+  const { bestOffers } = state.ourBurgers
   return { banners, bestOffers }
 }
 
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({}, dispatch)
-)
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ onSelectItem }, dispatch)
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
 

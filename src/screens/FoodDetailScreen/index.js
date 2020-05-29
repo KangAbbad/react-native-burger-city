@@ -6,16 +6,30 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import StarRating from 'react-native-star-rating'
 import { TouchableOpacity as RNGHTouchable } from 'react-native-gesture-handler'
+import Modal from 'react-native-modal'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { onAddFavourite, onRemoveFavourite } from '../../redux/actions/home'
 
 import { BaseStyles } from '../../constant'
 import Stepper from '../../components/global/Stepper'
+import { StandardButton } from '../../components/global/CustomButton'
 
 class FoodDetailScreen extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      isModalVisible: false
+    }
+  }
+
   render () {
     return (
       <View style={styles['container']}>
         {this.renderMainSection()}
         {this.renderFooterSection()}
+        {this.renderRemoveModal()}
       </View>
     )
   }
@@ -32,7 +46,9 @@ class FoodDetailScreen extends Component {
   }
 
   renderPoster = () => {
-    const { navigation } = this.props
+    const { navigation, selectedItem } = this.props
+    const { showDeleteItem = false } = this.props.route.params
+    const btnIcon = showDeleteItem ? 'delete' : 'favorite'
     return (
       <View>
         <StatusBar
@@ -41,7 +57,7 @@ class FoodDetailScreen extends Component {
           backgroundColor='transparent'
         />
         <ImageBackground
-          source={{ uri: 'https://live.staticflickr.com/4025/4671819961_69e1d93f81_z.jpg' }}
+          source={{ uri: selectedItem.imageUrl }}
           style={styles['poster']}
         >
           <View style={styles['poster__overlay']} />
@@ -71,7 +87,7 @@ class FoodDetailScreen extends Component {
                 { marginRight: 10 }
               ]}
             >
-              4.5
+              {selectedItem.rating}
             </Text>
             <StarRating
               disabled
@@ -86,11 +102,11 @@ class FoodDetailScreen extends Component {
 
           <View style={styles['favourite__wrapper']}>
             <RNGHTouchable
-              onPress={() => {}}
+              onPress={this.onPosterAction}
               style={styles['favourite__button']}
             >
               <MaterialIcons
-                name='favorite'
+                name={btnIcon}
                 color='#FFFFFF'
                 size={20}
               />
@@ -101,7 +117,19 @@ class FoodDetailScreen extends Component {
     )
   }
 
+  onPosterAction = () => {
+    const { selectedItem, onAddFavourite } = this.props
+    const { showDeleteItem = false } = this.props.route.params
+
+    if (showDeleteItem) {
+      this.onToggleModal()
+    } else {
+      onAddFavourite(selectedItem)
+    }
+  }
+
   renderContent = () => {
+    const { selectedItem } = this.props
     return (
       <View style={styles['content']}>
         <Text
@@ -112,7 +140,7 @@ class FoodDetailScreen extends Component {
             BaseStyles['text--black']
           ]}
         >
-          Beef Burger
+          {selectedItem.name}
         </Text>
 
         <Text
@@ -123,13 +151,14 @@ class FoodDetailScreen extends Component {
             { marginTop: 20 }
           ]}
         >
-          Officia esse cillum ullamco veniam fugiat elit anim in. Aliqua aliquip laboris elit laboris nisi et. Sit culpa exercitation nisi voluptate enim dolor cillum commodo esse reprehenderit reprehenderit id nostrud. Duis Lorem qui magna dolore mollit consectetur ullamco labore sit non voluptate sint elit eiusmod. Magna veniam laborum aliqua aliqua reprehenderit veniam laboris enim tempor non tempor adipisicing occaecat sunt.
+          {selectedItem.description}
         </Text>
       </View>
     )
   }
 
   renderFooterSection = () => {
+    const { selectedItem } = this.props
     return (
       <View style={styles['footer']}>
         <Text
@@ -140,7 +169,7 @@ class FoodDetailScreen extends Component {
             BaseStyles['text--white']
           ]}
         >
-          $13
+          ${selectedItem.price.toString()}
         </Text>
 
         <Stepper
@@ -161,13 +190,89 @@ class FoodDetailScreen extends Component {
       </View>
     )
   }
+
+  onToggleModal = () => {
+    this.setState(prevState => ({
+      isModalVisible: !prevState.isModalVisible
+    }))
+  }
+
+  renderRemoveModal = () => {
+    const { isModalVisible } = this.state
+    const { navigation, onRemoveFavourite, selectedItem } = this.props
+    return (
+      <Modal
+        isVisible={isModalVisible}
+        useNativeDriver
+        onBackdropPress={this.onToggleModal}
+      >
+        <View style={styles['remove__modal']}>
+          <StatusBar
+            barStyle='light-content'
+            backgroundColor='rgba(0, 0, 0, 0.7)'
+          />
+
+          <Text
+            style={[
+              BaseStyles['text'],
+              BaseStyles['text--xl'],
+              BaseStyles['text--bold'],
+              BaseStyles['text--black']
+            ]}
+          >
+            Do you want to remove it?
+          </Text>
+
+          <View style={styles['btn__wrapper']}>
+            <StandardButton
+              titleButton='No'
+              buttonStyle={{
+                flex: 1,
+                paddingVertical: 10,
+                marginRight: 10
+              }}
+              onPress={this.onToggleModal}
+            />
+            <StandardButton
+              titleButton='Yes'
+              buttonStyle={{
+                flex: 1,
+                backgroundColor: '#CECECE',
+                paddingVertical: 10
+              }}
+              onPress={() => {
+                onRemoveFavourite(selectedItem.id)
+                this.onToggleModal()
+                setTimeout(() => {
+                  navigation.goBack()
+                }, 500)
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
+    )
+  }
 }
 
 FoodDetailScreen.propTypes = {
-  navigation: PropTypes.object
+  route: PropTypes.object,
+  navigation: PropTypes.object,
+  selectedItem: PropTypes.object,
+  onAddFavourite: PropTypes.func,
+  onRemoveFavourite: PropTypes.func
 }
 
-export default FoodDetailScreen
+const mapStateToProps = (state) => {
+  const { selectedItem } = state.home
+  return { selectedItem }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ onAddFavourite, onRemoveFavourite }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FoodDetailScreen)
 
 const styles = StyleSheet.create({
   container: {
@@ -243,5 +348,16 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingTop: 8,
     marginLeft: 20
+  },
+  remove__modal: {
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    padding: 20
+  },
+  btn__wrapper: {
+    flexDirection: 'row',
+    marginTop: 25
   }
 })

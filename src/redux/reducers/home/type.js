@@ -1,0 +1,3 @@
+export const SELECT_ITEM = 'SELECT_ITEM'
+export const ADD_FAVOURITE = 'ADD_FAVOURITE'
+export const REMOVE_FAVOURITE = 'REMOVE_FAVOURITE'

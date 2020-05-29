@@ -40,7 +40,7 @@ class TrolleyContent extends Component {
             BaseStyles['text--black']
           ]}
         >
-          Confirmation
+          Your Order
         </Text>
         <Text
           style={[
