@@ -86,7 +86,7 @@ class CartContent extends Component {
     return (
       <View style={styles['button__wrapper']}>
         <Stepper
-          counter={(countNumber) => {
+          onCount={(countNumber) => {
             this.setState({ countItem: countNumber })
           }}
         />

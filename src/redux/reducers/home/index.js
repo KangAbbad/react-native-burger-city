@@ -1,4 +1,4 @@
-import { SELECT_ITEM, ADD_FAVOURITE, REMOVE_FAVOURITE } from './type'
+import { SELECT_ITEM, ADD_FAVOURITE, REMOVE_FAVOURITE, ADD_TROLLEY, REMOVE_TROLLEY } from './type'
 
 const INITIAL_STATE = {
   banners: [
@@ -32,7 +32,8 @@ const INITIAL_STATE = {
     description: '',
     isNewProduct: false
   },
-  favourites: []
+  favourites: [],
+  trolley: []
 }
 
 const home = (state = INITIAL_STATE, action) => {
@@ -47,6 +48,12 @@ const home = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         favourites: action.newFavourites
+      }
+    case ADD_TROLLEY:
+    case REMOVE_TROLLEY:
+      return {
+        ...state,
+        trolley: action.newTrolley
       }
     default:
       return state

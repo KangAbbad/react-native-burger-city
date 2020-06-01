@@ -1,5 +1,5 @@
 import Toast from 'react-native-simple-toast'
-import { SELECT_ITEM, ADD_FAVOURITE, REMOVE_FAVOURITE } from '../../reducers/home/type'
+import { SELECT_ITEM, ADD_FAVOURITE, REMOVE_FAVOURITE, ADD_TROLLEY, REMOVE_TROLLEY } from '../../reducers/home/type'
 
 export const onSelectItem = (item) => {
   return {
@@ -34,6 +34,37 @@ export const onRemoveFavourite = (id) => {
     dispatch({
       type: REMOVE_FAVOURITE,
       newFavourites: filteredFavourite
+    })
+  }
+}
+
+export const onAddTrolley = (item) => {
+  return (dispatch, getState) => {
+    const { trolley } = getState().home
+    const newTrolley = [...trolley]
+
+    const foundItem = newTrolley.find(food => food.id === item.id)
+
+    if (foundItem) {
+      foundItem.countNumber = item.countNumber
+    } else {
+      newTrolley.push(item)
+    }
+
+    dispatch({
+      type: ADD_TROLLEY,
+      newTrolley: newTrolley
+    })
+  }
+}
+
+export const onRemoveTrolley = (index) => {
+  return (dispatch, getState) => {
+    const { trolley } = getState().home
+    trolley.splice(index, 1)
+    dispatch({
+      type: REMOVE_TROLLEY,
+      newTrolley: trolley
     })
   }
 }

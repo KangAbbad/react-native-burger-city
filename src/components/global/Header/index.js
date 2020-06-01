@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native'
+import { StatusBar, StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { useNavigation } from '@react-navigation/native'
@@ -11,6 +11,12 @@ const Header = (props) => {
   const navigation = useNavigation()
   return (
     <View style={styles['header']}>
+      <StatusBar
+        translucent
+        animated
+        barStyle='dark-content'
+        backgroundColor='transparent'
+      />
       <LeftButton
         withBack={props.withBack}
         onPressLeftButton={props.onPressLeftButton}

@@ -10,7 +10,7 @@ import Modal from 'react-native-modal'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { onAddFavourite, onRemoveFavourite } from '../../redux/actions/home'
+import { onAddFavourite, onRemoveFavourite, onAddTrolley } from '../../redux/actions/home'
 
 import { BaseStyles } from '../../constant'
 import Stepper from '../../components/global/Stepper'
@@ -20,7 +20,8 @@ class FoodDetailScreen extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      isModalVisible: false
+      isModalVisible: false,
+      countNumber: 1
     }
   }
 
@@ -158,7 +159,8 @@ class FoodDetailScreen extends Component {
   }
 
   renderFooterSection = () => {
-    const { selectedItem } = this.props
+    const { countNumber } = this.state
+    const { navigation, selectedItem, onAddTrolley } = this.props
     return (
       <View style={styles['footer']}>
         <Text
@@ -173,12 +175,17 @@ class FoodDetailScreen extends Component {
         </Text>
 
         <Stepper
+          count={countNumber}
           containerStyle={styles['stepper__container']}
           buttonStyle={styles['stepper__button']}
+          onCount={(number) => this.onCount(number)}
         />
 
         <TouchableOpacity
-          onPress={() => {}}
+          onPress={() => {
+            onAddTrolley({ ...selectedItem, countNumber })
+            navigation.navigate('TrolleyScreen')
+          }}
           style={styles['add-to-cart']}
         >
           <FontAwesome
@@ -189,6 +196,10 @@ class FoodDetailScreen extends Component {
         </TouchableOpacity>
       </View>
     )
+  }
+
+  onCount = (countNumber) => {
+    this.setState({ countNumber })
   }
 
   onToggleModal = () => {
@@ -260,7 +271,8 @@ FoodDetailScreen.propTypes = {
   navigation: PropTypes.object,
   selectedItem: PropTypes.object,
   onAddFavourite: PropTypes.func,
-  onRemoveFavourite: PropTypes.func
+  onRemoveFavourite: PropTypes.func,
+  onAddTrolley: PropTypes.func
 }
 
 const mapStateToProps = (state) => {
@@ -269,7 +281,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ onAddFavourite, onRemoveFavourite }, dispatch)
+  return bindActionCreators({ onAddFavourite, onRemoveFavourite, onAddTrolley }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FoodDetailScreen)

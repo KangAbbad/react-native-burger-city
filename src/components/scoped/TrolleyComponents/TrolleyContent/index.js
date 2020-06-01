@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { onRemoveTrolley } from '../../../../redux/actions/home'
 
 import { BaseStyles } from '../../../../constant'
 import Stepper from '../../../global/Stepper'
@@ -10,13 +15,13 @@ class TrolleyContent extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      orders: [0, 1, 2]
+      remakeTrolley: props.trolley
     }
   }
 
   render () {
-    const { orders } = this.state
-    if (orders.length) {
+    const { remakeTrolley } = this.state
+    if (remakeTrolley.length) {
       return (
         <View style={styles['container']}>
           {this.renderLead()}
@@ -57,10 +62,10 @@ class TrolleyContent extends Component {
   }
 
   renderOrderList = () => {
-    const { orders } = this.state
+    const { remakeTrolley } = this.state
     return (
       <FlatList
-        data={orders}
+        data={remakeTrolley}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => item + index.toString()}
         contentContainerStyle={styles['order-list']}
@@ -70,11 +75,11 @@ class TrolleyContent extends Component {
     )
   }
 
-  renderOrderListItem = ({ item }) => {
+  renderOrderListItem = ({ item, index }) => {
     return (
       <View style={styles['order-list__item']}>
         <Image
-          source={{ uri: 'https://live.staticflickr.com/8631/16505521041_b7d25f7dc8_z.jpg' }}
+          source={{ uri: item.imageUrl }}
           style={styles['order-list__item__image']}
         />
 
@@ -89,7 +94,7 @@ class TrolleyContent extends Component {
                 { flex: 1.5 }
               ]}
             >
-              Double Cheese Burger
+              {item.name}
             </Text>
 
             <Text
@@ -102,24 +107,60 @@ class TrolleyContent extends Component {
                 { flex: 0.5 }
               ]}
             >
-              $1300
+              ${item.price.toString()}
             </Text>
           </View>
 
-          <View>
-            <Stepper
-              containerStyle={{
-                borderWidth: 1,
-                borderColor: '#EFEFEF',
-                width: 100,
-                marginTop: 20,
-                marginLeft: 'auto'
+          <View style={styles['order-list__item__action']}>
+            <TouchableOpacity
+              onPress={() => {
+                this.onRemoveItem(index)
               }}
+            >
+              <MaterialCommunityIcons
+                name='delete-circle'
+                size={28}
+                color='#CECECE'
+              />
+            </TouchableOpacity>
+
+            <Stepper
+              count={item.countNumber}
+              containerStyle={styles['order-list__stepper']}
+              onCount={(number) => this.onCountItem(number, index)}
             />
           </View>
         </View>
       </View>
     )
+  }
+
+  onCountItem = (newCountNumber, index) => {
+    const { remakeTrolley } = this.state
+    const newRemakeTrolley = []
+
+    remakeTrolley.forEach((item, i) => {
+      newRemakeTrolley.push(item)
+
+      if (index === i) {
+        newRemakeTrolley[index].countNumber = newCountNumber
+      } else {
+        newRemakeTrolley[i].countNumber = item.countNumber
+      }
+    })
+
+    this.setState({ remakeTrolley: newRemakeTrolley })
+  }
+
+  onRemoveItem = (index) => {
+    const { remakeTrolley } = this.state
+    const { onRemoveTrolley } = this.props
+
+    remakeTrolley.splice(index, 1)
+
+    this.setState({ remakeTrolley }, () => {
+      onRemoveTrolley(index)
+    })
   }
 
   renderOrderDetail = () => {
@@ -240,10 +281,21 @@ class TrolleyContent extends Component {
 }
 
 TrolleyContent.propTypes = {
-  onPickupTime: PropTypes.func
+  onPickupTime: PropTypes.func,
+  trolley: PropTypes.array,
+  onRemoveTrolley: PropTypes.func
 }
 
-export default TrolleyContent
+const mapStateToProps = (state) => {
+  const { trolley } = state.home
+  return { trolley }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ onRemoveTrolley }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrolleyContent)
 
 const styles = StyleSheet.create({
   container: {
@@ -276,6 +328,17 @@ const styles = StyleSheet.create({
   'order-list__item__info--menu': {
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  'order-list__item__action': {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 20
+  },
+  'order-list__stepper': {
+    borderWidth: 1,
+    borderColor: '#EFEFEF',
+    width: 100
   },
   'order-detail': {
     backgroundColor: '#FFFFFF',

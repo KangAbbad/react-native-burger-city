@@ -1,127 +1,106 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 import Entypo from 'react-native-vector-icons/Entypo'
 
 import { BaseStyles } from '../../../constant'
 
-class Stepper extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      countNumber: 1
+const Stepper = (props) => {
+  const [countNumber, setCountNumber] = useState(1)
+
+  const countUp = () => {
+    setCountNumber(prevCountNumber => prevCountNumber + 1)
+  }
+
+  const countDown = () => {
+    if (countNumber > 1) {
+      setCountNumber(prevCountNumber => prevCountNumber - 1)
     }
   }
 
-  render () {
-    const { countNumber } = this.state
-    const { containerStyle, buttonStyle } = this.props
-    const wrapperStyle = [
-      styles['container'],
-      containerStyle
-    ]
+  useEffect(() => {
+    const { count } = props
+    if (count) {
+      setCountNumber(count)
+    }
+  }, [])
 
-    return (
-      <View style={wrapperStyle}>
-        <TouchableOpacity
-          onPress={this.countDown}
-          style={{ padding: 10 }}
-        >
-          <View
-            style={[
-              styles['button'],
-              buttonStyle
-            ]}
-          >
-            <Entypo
-              name='minus'
-              size={16}
-              color={buttonStyle && buttonStyle.color ? buttonStyle.color : '#727C8E'}
-            />
-          </View>
-        </TouchableOpacity>
+  useEffect(() => {
+    const { onCount } = props
+    if (onCount) {
+      onCount(countNumber)
+    }
+  }, [countNumber])
 
-        <Text
+  const { containerStyle, buttonStyle } = props
+  const wrapperStyle = [
+    styles['container'],
+    containerStyle
+  ]
+
+  return (
+    <View style={wrapperStyle}>
+      <TouchableOpacity
+        onPress={countDown}
+        style={{ padding: 10 }}
+      >
+        <View
           style={[
-            BaseStyles['text'],
-            BaseStyles['text--large'],
-            BaseStyles['text--black'],
-            containerStyle.color && {
-              color: containerStyle.color
-            },
-            containerStyle.fontSize && {
-              fontSize: containerStyle.fontSize
-            }
+            styles['button'],
+            buttonStyle
           ]}
         >
-          {countNumber}
-        </Text>
+          <Entypo
+            name='minus'
+            size={16}
+            color={buttonStyle && buttonStyle.color
+              ? buttonStyle.color
+              : '#727C8E'}
+          />
+        </View>
+      </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={this.countUp}
-          style={{ padding: 10 }}
+      <Text
+        style={[
+          BaseStyles['text'],
+          BaseStyles['text--large'],
+          BaseStyles['text--black'],
+          containerStyle.color && {
+            color: containerStyle.color
+          },
+          containerStyle.fontSize && {
+            fontSize: containerStyle.fontSize
+          }
+        ]}
+      >
+        {countNumber}
+      </Text>
+
+      <TouchableOpacity
+        onPress={countUp}
+        style={{ padding: 10 }}
+      >
+        <View
+          style={[
+            styles['button'],
+            buttonStyle
+          ]}
         >
-          <View
-            style={[
-              styles['button'],
-              buttonStyle
-            ]}
-          >
-            <Entypo
-              name='plus'
-              size={16}
-              color={buttonStyle && buttonStyle.color ? buttonStyle.color : '#727C8E'}
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-
-  countUp = () => {
-    this.setState(prevState => ({
-      countNumber: prevState.countNumber + 1
-    }), () => {
-      const { counter } = this.props
-      if (counter) {
-        counter(this.state.countNumber)
-      }
-    })
-
-    // const plus = prevState => ({
-    //   countNumber: prevState.countNumber + 1
-    // })
-    // const callback = () => {
-    //   const { counter } = this.props
-    //   counter(this.state.countNumber)
-    // }
-    // this.setState(plus, callback)
-  }
-
-  countDown = () => {
-    // const { countNumber } = this.state
-    // let newCountNumber = 1
-    // if (countNumber > 1) {
-    //   newCountNumber = countNumber - 1
-    // }
-    // this.setState({ countNumber: newCountNumber })
-    this.setState(prevState => {
-      if (prevState.countNumber > 1) {
-        return {
-          countNumber: prevState.countNumber - 1
-        }
-      }
-    }, () => {
-      const { counter } = this.props
-      if (counter) {
-        counter(this.state.countNumber)
-      }
-    })
-  }
+          <Entypo
+            name='plus'
+            size={16}
+            color={buttonStyle && buttonStyle.color
+              ? buttonStyle.color : '#727C8E'}
+          />
+        </View>
+      </TouchableOpacity>
+    </View>
+  )
 }
 
 Stepper.propTypes = {
-  counter: PropTypes.func,
+  count: PropTypes.number,
+  onCount: PropTypes.func,
   containerStyle: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array
@@ -133,7 +112,8 @@ Stepper.propTypes = {
 }
 
 Stepper.defaultProps = {
-  counter: () => {},
+  count: 1,
+  onCount: () => {},
   containerStyle: {},
   buttonStyle: {}
 }
