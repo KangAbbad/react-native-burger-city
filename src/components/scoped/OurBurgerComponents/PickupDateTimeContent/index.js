@@ -3,11 +3,32 @@ import PropTypes from 'prop-types'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Calendar } from 'react-native-calendars'
+import DropDownPicker from 'react-native-dropdown-picker'
 
-import { StandardButton, IconButton } from '../../../global/CustomButton'
 import { BaseStyles } from '../../../../constant'
+import { StandardButton, IconButton } from '../../../global/CustomButton'
+import SlideUpModal from '../../../global/SlideUpModal'
 
 class PickupDateTimeContent extends Component {
+  constructor (props) {
+    super(props)
+
+    const date = new Date()
+    const yyyy = date.getFullYear()
+    const mm = (date.getMonth() + 1) < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
+    const dd = date.getDay() < 10 ? `0${date.getDay()}` : date.getDay()
+
+    this.state = {
+      isModalVisible: false,
+      dateToday: `${yyyy}-${mm}-${dd}`,
+      selectedDate: `${yyyy}-${mm}-${dd}`,
+      selectedHour: 0,
+      selectedMinute: 0,
+      selectedTime: 'AM'
+    }
+  }
+
   render () {
     return (
       <View style={styles['container']}>
@@ -15,11 +36,16 @@ class PickupDateTimeContent extends Component {
         {this.renderEditTime()}
         {this.renderNote()}
         {this.renderSelectButton()}
+        {this.renderModalCelendar()}
       </View>
     )
   }
 
   renderEditDate = () => {
+    const { selectedDate } = this.state
+    const word = selectedDate.split('-')
+    const titleButton = `${word[2]} / ${word[1]} / ${word[0]}`
+
     return (
       <View style={styles['date']}>
         <Text
@@ -44,7 +70,7 @@ class PickupDateTimeContent extends Component {
         </Text>
 
         <IconButton
-          titleButton='30 / 08 / 2018'
+          titleButton={titleButton}
           iconRight={
             <MaterialCommunityIcons
               name='calendar-star'
@@ -56,7 +82,9 @@ class PickupDateTimeContent extends Component {
             paddingRight: 15,
             marginTop: 18
           }}
-          onPress={() => {}}
+          onPress={() => {
+            this.onToggleModal()
+          }}
         />
       </View>
     )
@@ -117,22 +145,23 @@ class PickupDateTimeContent extends Component {
             </Text>
           </TouchableOpacity>
 
-          <IconButton
-            titleButton='PM'
-            iconRight={
-              <Ionicons
-                name='ios-arrow-dropdown-circle'
-                size={18}
-                color='#E3E5E8'
-                style={{ marginLeft: 10 }}
-              />
-            }
-            buttonStyle={{
-              height: 45,
-              marginHorizontal: 7
+          <DropDownPicker
+            items={[
+              { label: 'AM', value: 0, selected: false },
+              { label: 'PM', value: 1, selected: true }
+            ]}
+            containerStyle={{ marginHorizontal: 7 }}
+            style={{ borderWidth: 0 }}
+            dropDownStyle={{ borderWidth: 0, borderTopWidth: 1, borderTopColor: '#EFEFEF' }}
+            labelStyle={{
+              color: '#1D2126',
+              fontFamily: 'Nunito-Regular',
+              fontSize: 14
             }}
-            onPress={() => {}}
+            arrowStyle={{ marginLeft: 10 }}
+            onChangeItem={item => console.log(item.label, item.value)}
           />
+
         </View>
       </View>
     )
@@ -161,6 +190,52 @@ class PickupDateTimeContent extends Component {
         onPress={onProceed}
         buttonStyle={styles['proceed-order__button']}
       />
+    )
+  }
+
+  onToggleModal = () => {
+    this.setState(prevState => ({
+      isModalVisible: !prevState.isModalVisible
+    }))
+  }
+
+  onDayPress = (day) => {
+    this.setState({ selectedDate: day.dateString })
+  }
+
+  renderModalCelendar = () => {
+    const { isModalVisible, dateToday, selectedDate } = this.state
+    return (
+      <SlideUpModal
+        isModalVisible={isModalVisible}
+        onClose={this.onToggleModal}
+      >
+        <Calendar
+          onDayPress={this.onDayPress}
+          minDate={dateToday}
+          markedDates={{
+            [selectedDate]: {
+              selected: true,
+              disableTouchEvent: true,
+              selectedColor: '#FF9C1F',
+              selectedTextColor: '#FFFFFF'
+            }
+          }}
+          theme={{
+            todayTextColor: '#FF9C1F',
+            arrowColor: '#FF9C1F',
+            selectedColor: '#FF9C1F',
+            selectedTextColor: '#FFFFFF',
+            textDayFontFamily: 'Nunito-Regular',
+            textMonthFontFamily: 'Nunito-SemiBold',
+            textDayHeaderFontFamily: 'Nunito-Regular',
+            textDayFontSize: 14,
+            textMonthFontSize: 16,
+            textDayHeaderFontSize: 14
+          }}
+          style={{ paddingBottom: 20 }}
+        />
+      </SlideUpModal>
     )
   }
 }
