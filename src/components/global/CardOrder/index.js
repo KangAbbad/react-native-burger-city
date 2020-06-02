@@ -1,119 +1,118 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, Image, Text, FlatList } from 'react-native'
 
 import { BaseStyles } from '../../../constant'
 import menuMeals from '../../../assets/images/menu-meals.png'
 
-class CardOrder extends Component {
-  render () {
-    const { containerStyle } = this.props
+let selfProps = {
+  mealPackage: '',
+  listPackage: [],
+  price: 0
+}
 
-    const wrapperStyle = [
-      styles['receipt'],
-      containerStyle
-    ]
+const CardOrder = (props) => {
+  selfProps = props
+  const { containerStyle } = props
 
-    return (
-      <View style={wrapperStyle}>
-        {this.renderIcon()}
-        {this.renderInfo()}
-      </View>
-    )
-  }
+  const wrapperStyle = [
+    styles['receipt'],
+    containerStyle
+  ]
 
-  renderIcon = () => {
-    return (
-      <Image
-        source={menuMeals}
-        style={styles['receipt__icon']}
-      />
-    )
-  }
+  return (
+    <View style={wrapperStyle}>
+      <RenderIcon />
+      <RenderInfo />
+    </View>
+  )
+}
 
-  renderInfo = () => {
-    return (
-      <View style={styles['receipt__info']}>
-        {this.renderInfoPackage()}
-        {this.renderInfoPackageList()}
-        {this.renderInfoPrice()}
-      </View>
-    )
-  }
+const RenderIcon = () => {
+  return (
+    <Image
+      source={menuMeals}
+      style={styles['receipt__icon']}
+    />
+  )
+}
 
-  renderInfoPackage = () => {
-    const { mealPackage } = this.props
-    return (
-      <Text
-        style={[
-          BaseStyles['text'],
-          BaseStyles['text--large'],
-          BaseStyles['text--black'],
-          BaseStyles['text--semibold']
-        ]}
-      >
-        {mealPackage}
-      </Text>
-    )
-  }
+const RenderInfo = () => {
+  return (
+    <View style={styles['receipt__info']}>
+      <RenderInfoPackage />
+      <RenderInfoPackageList />
+      <RenderInfoPrice />
+    </View>
+  )
+}
 
-  renderInfoPackageList = () => {
-    const { listPackage } = this.props
-    return (
-      <FlatList
-        data={listPackage}
-        keyExtractor={(item, index) => item + index.toString()}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ marginTop: 10 }}
-        renderItem={this.renderPackageListItem}
-      />
-    )
-  }
+const RenderInfoPackage = () => {
+  return (
+    <Text
+      style={[
+        BaseStyles['text'],
+        BaseStyles['text--large'],
+        BaseStyles['text--black'],
+        BaseStyles['text--semibold']
+      ]}
+    >
+      {selfProps.mealPackage}
+    </Text>
+  )
+}
 
-  renderPackageListItem = ({ item }) => {
-    return (
-      <Text
-        style={[
-          BaseStyles['text'],
-          BaseStyles['text--large'],
-          BaseStyles['text--gray']
-        ]}
-      >
-        {item}
-      </Text>
-    )
-  }
+const RenderInfoPackageList = () => {
+  return (
+    <FlatList
+      data={selfProps.listPackage}
+      keyExtractor={(item, index) => item + index.toString()}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ marginTop: 10 }}
+      renderItem={({ item }) => renderPackageListItem(item)}
+    />
+  )
+}
 
-  renderInfoPrice = () => {
-    const { price } = this.props
-    return (
-      <Text
-        style={[
-          BaseStyles['text'],
-          BaseStyles['text--large'],
-          BaseStyles['text--orange'],
-          BaseStyles['text--bold'],
-          {
-            marginTop: 30,
-            marginRight: 20,
-            marginLeft: 'auto'
-          }
-        ]}
-      >
-        {`${price} LKR`}
-      </Text>
-    )
-  }
+const renderPackageListItem = (item) => {
+  return (
+    <Text
+      style={[
+        BaseStyles['text'],
+        BaseStyles['text--large'],
+        BaseStyles['text--gray']
+      ]}
+    >
+      {item}
+    </Text>
+  )
+}
+
+const RenderInfoPrice = () => {
+  return (
+    <Text
+      style={[
+        BaseStyles['text'],
+        BaseStyles['text--large'],
+        BaseStyles['text--orange'],
+        BaseStyles['text--bold'],
+        {
+          marginTop: 30,
+          marginRight: 20,
+          marginLeft: 'auto'
+        }
+      ]}
+    >
+      {`${selfProps.price} LKR`}
+    </Text>
+  )
 }
 
 CardOrder.propTypes = {
   containerStyle: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array
-  ]),
-  mealPackage: PropTypes.string,
-  listPackage: PropTypes.array,
-  price: PropTypes.number
+  ])
 }
 
 export default CardOrder
