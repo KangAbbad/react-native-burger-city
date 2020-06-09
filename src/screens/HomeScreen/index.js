@@ -185,7 +185,9 @@ class HomeScreen extends Component {
       <TouchableOpacity
         onPress={() => {
           onSelectItem(item)
-          navigation.navigate('FoodDetailScreen', { showDeleteItem: false })
+          navigation.navigate('FoodDetailScreen', {
+            showDeleteItem: false
+          })
         }}
       >
         <View style={styles['home__best-offer__item']}>
@@ -235,7 +237,7 @@ const mapStateToProps = (state) => {
   return { banners, bestOffers }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ onSelectItem }, dispatch)
 }
 

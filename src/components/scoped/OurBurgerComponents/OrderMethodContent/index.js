@@ -6,6 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { onSelectOrderMethod } from '../../../../redux/actions/ourBurgers'
+import { onSaveOrderMethod } from '../../../../redux/actions/myOrder'
 
 import { StandardButton, IconButton } from '../../../global/CustomButton'
 import { BaseStyles } from '../../../../constant'
@@ -80,21 +81,28 @@ class OrderMethodContent extends Component {
   }
 
   renderProceedButton = () => {
-    const { onProceed } = this.props
     return (
       <StandardButton
         titleButton='Proceed to Order'
         buttonStyle={styles['proceed__button']}
-        onPress={onProceed}
+        onPress={this.onSubmitOrderMethod}
       />
     )
+  }
+
+  onSubmitOrderMethod = () => {
+    const { orderMethod, onProceed, onSaveOrderMethod } = this.props
+    const selectedOrderMethod = orderMethod.filter((item) => item.isActive)
+    onSaveOrderMethod(selectedOrderMethod[0])
+    onProceed()
   }
 }
 
 OrderMethodContent.propTypes = {
   onProceed: PropTypes.func,
   orderMethod: PropTypes.array,
-  onSelectOrderMethod: PropTypes.func
+  onSelectOrderMethod: PropTypes.func,
+  onSaveOrderMethod: PropTypes.func
 }
 
 const mapStateToProps = (state) => {
@@ -103,7 +111,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ onSelectOrderMethod }, dispatch)
+  return bindActionCreators({ onSelectOrderMethod, onSaveOrderMethod }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderMethodContent)

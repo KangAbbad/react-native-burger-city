@@ -17,12 +17,20 @@ import CartSubtotalContent from '../../components/scoped/OurBurgerComponents/Car
 import CondimentsContent from '../../components/scoped/OurBurgerComponents/CondimentsContent'
 import CartTotalContent from '../../components/scoped/OurBurgerComponents/CartTotalContent'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
 class OurBurgerScreen extends Component {
   constructor (props) {
     super(props)
     this.state = {
       slideActive: 0
     }
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    console.log('Data myOrder')
+    console.log(this.props.myOrder)
   }
 
   render () {
@@ -174,7 +182,16 @@ OurBurgerScreen.propTypes = {
   navigation: PropTypes.object
 }
 
-export default OurBurgerScreen
+const mapStateToProps = (state) => {
+  const { myOrder } = state
+  return { myOrder }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OurBurgerScreen)
 
 const styles = StyleSheet.create({
   container: {

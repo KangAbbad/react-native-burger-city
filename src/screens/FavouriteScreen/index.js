@@ -21,6 +21,10 @@ class FavoriteScreen extends Component {
     )
   }
 
+  componentDidMount () {
+    console.log(this.props.favourites)
+  }
+
   renderHeader = () => {
     return <Header />
   }
@@ -71,7 +75,9 @@ class FavoriteScreen extends Component {
         }
         onPress={() => {
           onSelectItem(item)
-          navigation.navigate('FoodDetailScreen', { showDeleteItem: true })
+          navigation.navigate('FoodDetailScreen', {
+            showDeleteItem: true
+          })
         }}
       />
     )

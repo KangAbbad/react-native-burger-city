@@ -2,9 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Calendar } from 'react-native-calendars'
 import DropDownPicker from 'react-native-dropdown-picker'
+import DateTimePicker from '@react-native-community/datetimepicker'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { onChangePickup } from '../../../../redux/actions/myOrder'
 
 import { BaseStyles } from '../../../../constant'
 import { StandardButton, IconButton } from '../../../global/CustomButton'
@@ -14,19 +18,49 @@ class PickupDateTimeContent extends Component {
   constructor (props) {
     super(props)
 
+    this.state = {
+      isModalVisible: false,
+      dateToday: '',
+      selectedDate: '',
+      selectedHour: 0,
+      selectedMinute: 0,
+      selectedTime: 'am',
+      isShowTimePicker: false
+    }
+  }
+
+  getDateToday = () => {
     const date = new Date()
     const yyyy = date.getFullYear()
     const mm = (date.getMonth() + 1) < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
     const dd = date.getDay() < 10 ? `0${date.getDay()}` : date.getDay()
+    const selectedHour = date.getHours()
+    const selectedMinute = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
 
-    this.state = {
-      isModalVisible: false,
+    this.getSelectedTime(selectedHour)
+
+    this.setState({
       dateToday: `${yyyy}-${mm}-${dd}`,
       selectedDate: `${yyyy}-${mm}-${dd}`,
-      selectedHour: 0,
-      selectedMinute: 0,
-      selectedTime: 'AM'
+      selectedHour,
+      selectedMinute
+    })
+  }
+
+  getSelectedTime = (hours) => {
+    const hoursTime = (hours + 24) % 24
+
+    let selectedTime = 'am'
+
+    if (hoursTime > 12) {
+      selectedTime = 'pm'
     }
+
+    this.setState({ selectedTime })
+  }
+
+  componentDidMount () {
+    this.getDateToday()
   }
 
   render () {
@@ -37,6 +71,7 @@ class PickupDateTimeContent extends Component {
         {this.renderNote()}
         {this.renderSelectButton()}
         {this.renderModalCelendar()}
+        {this.renderTimePicker()}
       </View>
     )
   }
@@ -91,6 +126,7 @@ class PickupDateTimeContent extends Component {
   }
 
   renderEditTime = () => {
+    const { selectedHour, selectedMinute, selectedTime } = this.state
     return (
       <View style={styles['time']}>
         <Text
@@ -117,7 +153,7 @@ class PickupDateTimeContent extends Component {
         <View style={styles['time__picker']}>
           <TouchableOpacity
             style={styles['time__picker__button']}
-            onPress={() => {}}
+            onPress={this.onToggleTimePicker}
           >
             <Text
               style={[
@@ -126,13 +162,13 @@ class PickupDateTimeContent extends Component {
                 BaseStyles['text--black']
               ]}
             >
-              06
+              {selectedHour}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles['time__picker__button']}
-            onPress={() => {}}
+            onPress={this.onToggleTimePicker}
           >
             <Text
               style={[
@@ -141,15 +177,16 @@ class PickupDateTimeContent extends Component {
                 BaseStyles['text--black']
               ]}
             >
-              50
+              {selectedMinute}
             </Text>
           </TouchableOpacity>
 
           <DropDownPicker
             items={[
-              { label: 'AM', value: 0, selected: false },
-              { label: 'PM', value: 1, selected: true }
+              { label: 'AM', value: 'am' },
+              { label: 'PM', value: 'pm' }
             ]}
+            defaultValue={selectedTime}
             containerStyle={{ marginHorizontal: 7 }}
             style={{ borderWidth: 0 }}
             dropDownStyle={{ borderWidth: 0, borderTopWidth: 1, borderTopColor: '#EFEFEF' }}
@@ -159,12 +196,19 @@ class PickupDateTimeContent extends Component {
               fontSize: 14
             }}
             arrowStyle={{ marginLeft: 10 }}
-            onChangeItem={item => console.log(item.label, item.value)}
+            onChangeItem={item => {
+              this.setState({ selectedTime: item.value })
+            }}
           />
-
         </View>
       </View>
     )
+  }
+
+  onToggleTimePicker = () => {
+    this.setState(prevState => ({
+      isShowTimePicker: !prevState.isShowTimePicker
+    }))
   }
 
   renderNote = () => {
@@ -183,14 +227,25 @@ class PickupDateTimeContent extends Component {
   }
 
   renderSelectButton = () => {
-    const { onProceed } = this.props
     return (
       <StandardButton
         titleButton='Select'
-        onPress={onProceed}
+        onPress={this.onSelect}
         buttonStyle={styles['proceed-order__button']}
       />
     )
+  }
+
+  onSelect = () => {
+    const { selectedDate, selectedHour, selectedMinute, selectedTime } = this.state
+    const { onProceed, onChangePickup } = this.props
+    const pickupData = {
+      date: selectedDate,
+      time: `${selectedHour}:${selectedMinute} ${selectedTime.toUpperCase()}`
+    }
+
+    onChangePickup(pickupData)
+    onProceed()
   }
 
   onToggleModal = () => {
@@ -238,13 +293,52 @@ class PickupDateTimeContent extends Component {
       </SlideUpModal>
     )
   }
+
+  renderTimePicker = () => {
+    const { isShowTimePicker } = this.state
+    const date = new Date()
+    if (isShowTimePicker) {
+      return (
+        <DateTimePicker
+          value={date}
+          mode='time'
+          is24Hour={false}
+          display='spinner'
+          onChange={this.onChangeTime}
+        />
+      )
+    }
+  }
+
+  onChangeTime = (event, selectedDate) => {
+    const date = new Date()
+    const currentDate = selectedDate || date
+
+    const hours = currentDate.getHours()
+    const ampmHours = (hours + 12) % 24
+    const selectedHour = ampmHours < 10 ? `0${ampmHours}` : ampmHours
+    const selectedMinute = currentDate.getMinutes()
+
+    this.onToggleTimePicker()
+    this.getSelectedTime(hours)
+    this.setState({ selectedHour, selectedMinute })
+  }
 }
 
 PickupDateTimeContent.propTypes = {
-  onProceed: PropTypes.func
+  onProceed: PropTypes.func,
+  onChangePickup: PropTypes.func
 }
 
-export default PickupDateTimeContent
+const mapStateToProps = (state) => {
+  return {}
+}
+
+const mapStateToDispatch = (dispatch) => {
+  return bindActionCreators({ onChangePickup }, dispatch)
+}
+
+export default connect(mapStateToProps, mapStateToDispatch)(PickupDateTimeContent)
 
 const styles = StyleSheet.create({
   container: {

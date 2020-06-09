@@ -14,7 +14,11 @@ export const onAddFavourite = (item) => {
     const newFavourites = [...favourites, item]
     const favouritesNoDuplicate = new Set(newFavourites)
 
-    Toast.showWithGravity('Added to favourite.', Toast.SHORT, Toast.TOP)
+    Toast.showWithGravity(
+      'Added to favourite.',
+      Toast.SHORT,
+      Toast.TOP
+    )
 
     dispatch({
       type: ADD_FAVOURITE,

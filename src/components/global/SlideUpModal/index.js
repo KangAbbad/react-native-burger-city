@@ -1,11 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Dimensions, StatusBar } from 'react-native'
+import { StyleSheet, View, Dimensions, StatusBar, BackHandler } from 'react-native'
 import Modal from 'react-native-modal'
 
 const SlideUpModal = (props) => {
   const { isModalVisible, onClose, children } = props
   const { height, width } = Dimensions.get('window')
+
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     console.log('backAction trigerred')
+  //     onClose()
+  //     return true
+  //   }
+
+  //   const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
+
+  //   return () => backHandler.remove()
+  // }, [])
 
   return (
     <Modal

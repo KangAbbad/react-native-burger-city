@@ -3,11 +3,13 @@ import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { onChangeAddress } from '../../../../redux/actions/myOrder'
+
 import { BaseStyles } from '../../../../constant'
 import { StandardButton, IconButton } from '../../../global/CustomButton'
 import SlideUpModal from '../../../global/SlideUpModal'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 
 class DeliveryAddressContent extends Component {
   constructor (props) {
@@ -235,10 +237,13 @@ class DeliveryAddressContent extends Component {
   }
 
   renderProceedButton = () => {
-    const { onProceed } = this.props
+    const { deliveryDetails, onProceed } = this.props
+    const validate = Object.values(deliveryDetails)
+    const result = validate.find(item => { return !item })
     return (
       <StandardButton
         titleButton='Proceed to Order'
+        disabled={result !== undefined}
         onPress={onProceed}
         buttonStyle={styles['proceed-order__button']}
       />
@@ -253,7 +258,7 @@ class DeliveryAddressContent extends Component {
 
   renderEditModal = () => {
     const { isEditModal } = this.state
-    const { deliveryDetails } = this.props
+    const { deliveryDetails, onChangeAddress } = this.props
     return (
       <SlideUpModal
         isModalVisible={isEditModal}
@@ -277,14 +282,17 @@ class DeliveryAddressContent extends Component {
             textAlignVertical='top'
             value={deliveryDetails.address}
             style={styles['edit__modal__textarea']}
+            onChangeText={(value) => onChangeAddress(value)}
           />
 
           <StandardButton
             titleButton='Save'
+            disabled={!deliveryDetails.address}
             buttonStyle={{
               marginTop: 20,
               paddingVertical: 10
             }}
+            onPress={this.onToggleModal}
           />
         </View>
       </SlideUpModal>
@@ -295,12 +303,14 @@ class DeliveryAddressContent extends Component {
 DeliveryAddressContent.propTypes = {
   onProceed: PropTypes.func,
   onPickupTime: PropTypes.func,
+  onChangeAddress: PropTypes.func,
   deliveryDetails: PropTypes.object
 }
 
 DeliveryAddressContent.defaultProps = {
   onProceed: () => {},
-  onPickupTime: () => {}
+  onPickupTime: () => {},
+  onChangeAddress: () => {}
 }
 
 const mapStateToProps = (state) => {
@@ -309,7 +319,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({}, dispatch)
+  return bindActionCreators({ onChangeAddress }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeliveryAddressContent)

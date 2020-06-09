@@ -1047,6 +1047,13 @@
     wcwidth "^1.0.1"
     ws "^1.1.0"
 
+"@react-native-community/datetimepicker@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.4.0.tgz#6b3cf050f507f9b70d31d5a572e1153bb5bd50c9"
+  integrity sha512-ZXPwNAQt4T66PTL20l2nSEbtsn6vtsvFqdYWBfx8aaNKBoCPDygR6SsYzWcIoexKH5wmX0zctSzIsryl+Gtngg==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-community/eslint-config@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-config/-/eslint-config-1.1.0.tgz#2dacad06dd44d13e778510864473fc6091f080c0"
@@ -5754,10 +5761,10 @@ react-native-check-box@2.1.7:
   dependencies:
     prop-types "^15.5.7"
 
-react-native-dropdown-picker@^2.1.8:
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-2.1.8.tgz#ee1061662c9dcbc208c3b69df1beca1aac68738c"
-  integrity sha512-L60zulJsZHv3XaT8AiQL4VEMc+caXnuvYCqMbzJqkUBcstfN+bD5ulgMft6uvQqcWxBTqK1mrhQDf+zkEPzQEw==
+react-native-dropdown-picker@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-3.0.4.tgz#36fef2767df97169bd16b4cd25e112cc773da651"
+  integrity sha512-zhLSRJd4dlbVzP3+FQ/c5HMvzbuzplZ4tZPOukj0Ul38TOJixZRAjr1lecenKu25MyLGR/HB0qDVIu9IjlzTqQ==
   dependencies:
     prop-types "^15.7.2"
     react-native-vector-icons "^6.6.0"
